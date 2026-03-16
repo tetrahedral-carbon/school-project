@@ -8,3 +8,5 @@ HYD - Rajiv Gandhi International Airport, Hyderabad
 MAA - Chennai International Airport, Chennai
 
 we will have 3 categories - economy, premium economy and business class
+
+airbus a320-200 will be our airplane
