@@ -193,6 +193,9 @@ for i in range(13, 16):
 cost_counter = Label(root, text = f"0 seat(s) selected --> total cost = ₹0", font = ("Arial", 20))
 cost_counter.grid(row = 2, column = 0)
 
+# exit button
+Label(root, text = "").grid(row = 3, column = 0)
+Button(root, text = "Click To Exit", font = ("Arial", 15), command = root.destroy).grid(row = 4, column = 0)
 
 # main window loop
 root.mainloop()
