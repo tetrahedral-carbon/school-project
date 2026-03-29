@@ -6,7 +6,8 @@ root = Tk()
 root.geometry("1500x800")
 root.title("BlueBus Booking Platform")
 
-Label(root, text = "Welcome To Bus Ticket Booking Center", font = ("Arial", 25, "bold")).grid(row = 0, column = 0)
+wlcm_lbl = Label(root, text = "Welcome To Bus Ticket Booking Center", font = ("Arial", 25, "bold"))
+wlcm_lbl.grid(row = 0, column = 0)
 
 # seat selection-deselection changes
 num_low = num_up = 0     # no. of seats selected
@@ -193,9 +194,31 @@ for i in range(13, 16):
 cost_counter = Label(root, text = f"0 seat(s) selected --> total cost = ₹0", font = ("Arial", 20))
 cost_counter.grid(row = 2, column = 0)
 
-# exit button
 Label(root, text = "").grid(row = 3, column = 0)
-Button(root, text = "Click To Exit", font = ("Arial", 15), command = root.destroy).grid(row = 4, column = 0)
+
+
+# after selection booking
+def book():
+    global num_up, num_low
+    upper_frame.grid_forget()
+    lower_frame.grid_forget()
+    book_btn.grid_forget()
+    wlcm_lbl.grid_forget()
+    cost_counter.grid_forget()
+    
+    ticket_cost = num_low*500 + num_up*400
+    total_cost = ticket_cost*1.18
+
+    Label(root, text = f"{num_up+num_low} seats booked", font = ("Calibri", 25)).grid(row = 0, column = 0)
+    Label(root, text = f"Total Cost = ₹{total_cost} (incl. of all taxes)", font = ("Calibri", 25)).grid(row = 0, column = 1)
+    Label(root, text = f"{num_up} Upper Berth Seat(s)", font = ("Calibri", 25)).grid(row = 1, column = 0)
+    Label(root, text = f"{num_low} Lower Berth Seat(s)", font = ("Calibri", 25)).grid(row = 1, column = 1)
+    Label(root, text = "Thank You For Chossing BlueBus, India\'s best bus service", font = ("Calibri", 25), pady = 30).grid(row = 2, column = 0)
+    
+
+book_btn = Button(root, text = "Click To Book", font = ("Arial", 15), command = book)
+book_btn.grid(row = 4, column = 0)
+
 
 # main window loop
 root.mainloop()
