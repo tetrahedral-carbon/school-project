@@ -1,14 +1,18 @@
 # base for ticket booking system
 
+# gui modules
 from tkinter import *
+from tkinter import ttk
+import ttkbootstrap as ttk
 
+# welcome page
 root = Tk()
-root.geometry("1500x800")
+root.geometry("1920x1080")
 root.title("BlueBus Booking Platform")
 
 wlcm_lbl = Label(root, text = "Welcome To Bus Ticket Booking Center", font = ("Arial", 25, "bold"))
-wlcm_lbl.grid(row = 0, column = 0)
-
+wlcm_lbl.grid(row = 0, column = 0, columnspan = 2)
+    
 # seat selection-deselection changes
 num_low = num_up = 0     # no. of seats selected
 
@@ -25,7 +29,7 @@ def select_low(seatnum):
 
 def deselect_low(seatnum):
     seat_btn = seat_dict_low[seatnum]
-    seat_btn.config(bg = "#F0F0F0", command = lambda n=seatnum: select_low(n))
+    seat_btn.config(bg = "white", command = lambda n=seatnum: select_low(n))
     global cost_counter, num_low, num_up
 
     num_low -= 1
@@ -46,7 +50,7 @@ def select_up(seatnum):
 
 def deselect_up(seatnum):
     seat_btn = seat_dict_up[seatnum]
-    seat_btn.config(bg = "#F0F0F0", command = lambda n=seatnum: select_up(n))
+    seat_btn.config(bg = "white", command = lambda n=seatnum: select_up(n))
     global cost_counter, num_low, num_up
 
     num_up -= 1
@@ -68,7 +72,7 @@ seat_dict_low = {}
 # first row
 for i in range(1, 4):
     seatnum = i
-    seat_btn = Button(lower_frame, text = f"L{seatnum}", font = ("Arial", 20, "normal"), command = lambda n=seatnum: select_low(n), padx = 30)
+    seat_btn = Button(lower_frame, text = f"L{seatnum}", font = ("Arial", 20, "normal"), command = lambda n=seatnum: select_low(n), padx = 34, bg = "white")
     if i == 1:
         seat_btn.grid(row = 1, column = i-1)
         seat_dict_low[i] = seat_btn
@@ -79,7 +83,7 @@ for i in range(1, 4):
 # second row
 for i in range(4, 7):
     seatnum = i
-    seat_btn = Button(lower_frame, text = f"L{seatnum}", font = ("Arial", 20, "normal"), command = lambda n=seatnum: select_low(n), padx = 30)
+    seat_btn = Button(lower_frame, text = f"L{seatnum}", font = ("Arial", 20, "normal"), command = lambda n=seatnum: select_low(n), padx = 34, bg = "white")
     if i == 4:
         seat_btn.grid(row = 2, column = i-4)
         seat_dict_low[i] = seat_btn
@@ -90,7 +94,7 @@ for i in range(4, 7):
 # third row
 for i in range(7, 10):
     seatnum = i
-    seat_btn = Button(lower_frame, text = f"L{seatnum}", font = ("Arial", 20, "normal"), command = lambda n=seatnum: select_low(n), padx = 30)
+    seat_btn = Button(lower_frame, text = f"L{seatnum}", font = ("Arial", 20, "normal"), command = lambda n=seatnum: select_low(n), padx = 34, bg = "white")
     if i == 7:
         seat_btn.grid(row = 3, column = i-7)
         seat_dict_low[i] = seat_btn
@@ -101,7 +105,7 @@ for i in range(7, 10):
 # fourth row
 for i in range(10, 13):
     seatnum = i
-    seat_btn = Button(lower_frame, text = f"L{seatnum}", font = ("Arial", 20, "normal"), command = lambda n=seatnum: select_low(n), padx = 23)
+    seat_btn = Button(lower_frame, text = f"L{seatnum}", font = ("Arial", 20, "normal"), command = lambda n=seatnum: select_low(n), padx = 23, bg = "white")
     if i == 10:
         seat_btn.grid(row = 4, column = i-10)
         seat_dict_low[i] = seat_btn
@@ -112,7 +116,7 @@ for i in range(10, 13):
 # fifth row
 for i in range(13, 16):
     seatnum = i
-    seat_btn = Button(lower_frame, text = f"L{seatnum}", font = ("Arial", 20, "normal"), command = lambda n=seatnum: select_low(n), padx = 23)
+    seat_btn = Button(lower_frame, text = f"L{seatnum}", font = ("Arial", 20, "normal"), command = lambda n=seatnum: select_low(n), padx = 23, bg = "white")
     if i == 13:
         seat_btn.grid(row = 5, column = i-13)
         seat_dict_low[i] = seat_btn
@@ -135,7 +139,7 @@ seat_dict_up = {}
 # first row
 for i in range(1, 4):
     seatnum = i
-    seat_btn = Button(upper_frame, text = f"U{seatnum}", font = ("Arial", 20, "normal"), command = lambda n=seatnum: select_up(n), padx = 30)
+    seat_btn = Button(upper_frame, text = f"U{seatnum}", font = ("Arial", 20, "normal"), command = lambda n=seatnum: select_up(n), padx = 34, bg = "white")
     if i == 1:
         seat_btn.grid(row = 1, column = i-1)
         seat_dict_up[i] = seat_btn
@@ -146,7 +150,7 @@ for i in range(1, 4):
 # second row
 for i in range(4, 7):
     seatnum = i
-    seat_btn = Button(upper_frame, text = f"U{seatnum}", font = ("Arial", 20, "normal"), command = lambda n=seatnum: select_up(n), padx = 30)
+    seat_btn = Button(upper_frame, text = f"U{seatnum}", font = ("Arial", 20, "normal"), command = lambda n=seatnum: select_up(n), padx = 34, bg = "white")
     if i == 4:
         seat_btn.grid(row = 2, column = i-4)
         seat_dict_up[i] = seat_btn
@@ -157,7 +161,7 @@ for i in range(4, 7):
 # third row
 for i in range(7, 10):
     seatnum = i
-    seat_btn = Button(upper_frame, text = f"U{seatnum}", font = ("Arial", 20, "normal"), command = lambda n=seatnum: select_up(n), padx = 30)
+    seat_btn = Button(upper_frame, text = f"U{seatnum}", font = ("Arial", 20, "normal"), command = lambda n=seatnum: select_up(n), padx = 34, bg = "white")
     if i == 7:
         seat_btn.grid(row = 3, column = i-7)
         seat_dict_up[i] = seat_btn
@@ -168,7 +172,7 @@ for i in range(7, 10):
 # fourth row
 for i in range(10, 13):
     seatnum = i
-    seat_btn = Button(upper_frame, text = f"U{seatnum}", font = ("Arial", 20, "normal"), command = lambda n=seatnum: select_up(n), padx = 23)
+    seat_btn = Button(upper_frame, text = f"U{seatnum}", font = ("Arial", 20, "normal"), command = lambda n=seatnum: select_up(n), padx = 23, bg = "white")
     if i == 10:
         seat_btn.grid(row = 4, column = i-10)
         seat_dict_up[i] = seat_btn
@@ -179,14 +183,13 @@ for i in range(10, 13):
 # fifth row
 for i in range(13, 16):
     seatnum = i
-    seat_btn = Button(upper_frame, text = f"U{seatnum}", font = ("Arial", 20, "normal"), command = lambda n=seatnum: select_up(n), padx = 23)
+    seat_btn = Button(upper_frame, text = f"U{seatnum}", font = ("Arial", 20, "normal"), command = lambda n=seatnum: select_up(n), padx = 23, bg = "white")
     if i == 13:
         seat_btn.grid(row = 5, column = i-13)
         seat_dict_up[i] = seat_btn
     else:
         seat_btn.grid(row = 5, column = i-12)
         seat_dict_up[i] = seat_btn
-
 
 
 
@@ -210,13 +213,15 @@ def book():
     total_cost = ticket_cost*1.18
 
     Label(root, text = f"{num_up+num_low} seats booked", font = ("Calibri", 25)).grid(row = 0, column = 0)
-    Label(root, text = f"Total Cost = ₹{total_cost} (incl. of all taxes)", font = ("Calibri", 25)).grid(row = 0, column = 1)
+    Label(root, text = f"Total Cost = ₹{total_cost:.2f} (incl. of all taxes)", font = ("Calibri", 25)).grid(row = 0, column = 1)
+
     Label(root, text = f"{num_up} Upper Berth Seat(s)", font = ("Calibri", 25)).grid(row = 1, column = 0)
     Label(root, text = f"{num_low} Lower Berth Seat(s)", font = ("Calibri", 25)).grid(row = 1, column = 1)
-    Label(root, text = "Thank You For Chossing BlueBus, India\'s best bus service", font = ("Calibri", 25), pady = 30).grid(row = 2, column = 0)
+    
+    Label(root, text = "Thank You For Chossing BlueBus, India\'s best bus service", font = ("Calibri", 25), pady = 30).grid(row = 2, column = 0, columnspan = 2)
     
 
-book_btn = Button(root, text = "Click To Book", font = ("Arial", 15), command = book)
+book_btn = Button(root, text = "Click To Book", font = ("Arial", 15), command = book, bg = "#3FA6BF", fg = "white")
 book_btn.grid(row = 4, column = 0)
 
 
