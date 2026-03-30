@@ -1,5 +1,6 @@
 # school-project
 this is for grade 12 python + sql implementation for bus ticket booking system
+
 P.S. anyone can always add more ideas to this before vacation starts, then it will be finalised, and no changes will be done
 
 # stuff to do
