@@ -12,7 +12,7 @@ root.title("BlueBus Booking Platform")
 
 wlcm_lbl = Label(root, text = "Welcome To Bus Ticket Booking Center", font = ("Arial", 25, "bold"))
 wlcm_lbl.grid(row = 0, column = 0, columnspan = 2)
-    
+
 # seat selection-deselection changes
 num_low = num_up = 0     # no. of seats selected
 
@@ -213,12 +213,18 @@ def book():
     total_cost = ticket_cost*1.18
 
     Label(root, text = f"{num_up+num_low} seats booked", font = ("Calibri", 25)).grid(row = 0, column = 0)
-    Label(root, text = f"Total Cost = ₹{total_cost:.2f} (incl. of all taxes)", font = ("Calibri", 25)).grid(row = 0, column = 1)
 
     Label(root, text = f"{num_up} Upper Berth Seat(s)", font = ("Calibri", 25)).grid(row = 1, column = 0)
     Label(root, text = f"{num_low} Lower Berth Seat(s)", font = ("Calibri", 25)).grid(row = 1, column = 1)
     
-    Label(root, text = "Thank You For Chossing BlueBus, India\'s best bus service", font = ("Calibri", 25), pady = 30).grid(row = 2, column = 0, columnspan = 2)
+    # price breakdown
+    Label(root, text = "\nPrice Breakdown:", font = ("Calibri", 25)).grid(row = 2, column = 0)
+    Label(root, text = f"Ticket Price   : ₹{ticket_cost:.2f}", font = ("Calibri", 25)).grid(row = 3, column = 0)
+    Label(root, text = f"Taxes (18% GST): ₹{ticket_cost*0.18:.2f}", font = ("Calibri", 25)).grid(row = 4, column = 0)
+    Label(root, text = f"Total Price    : ₹{total_cost:.2f}", font = ("Calibri", 25)).grid(row = 5, column = 0)
+
+
+    Label(root, text = "\nThank You For Chossing BlueBus, India\'s best bus service", font = ("Calibri", 25), pady = 30).grid(row = 6, column = 0, columnspan = 2)
     
 
 book_btn = Button(root, text = "Click To Book", font = ("Arial", 15), command = book, bg = "#3FA6BF", fg = "white")
