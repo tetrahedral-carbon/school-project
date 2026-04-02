@@ -227,7 +227,7 @@ def book():
     Label(root, text = "\nThank You For Chossing BlueBus, India\'s best bus service", font = ("Calibri", 25), pady = 30).grid(row = 6, column = 0, columnspan = 2)
     
 
-book_btn = Button(root, text = "Click To Book", font = ("Arial", 15), command = book, bg = "#3FA6BF", fg = "white")
+book_btn = Button(root, text = "Click To Book", font = ("Arial", 15), command = book, bg = "#266CC8", fg = "white")
 book_btn.grid(row = 4, column = 0)
 
 
