@@ -12,7 +12,7 @@ exit page price breakdown
 
 store ticket details in database (name, date, route, no. of u & l berth)
 
-women seat blocking (seats adjacent to women reserved for women only) (double click for womens seats)
+women seat blocking (seats adjacent to women reserved for women only) 
 
 already booked seats should be displayed so in the booking page
 
@@ -25,3 +25,5 @@ ui improvements
 final page
 
 seat structure and placement
+
+women seat blocking (double click for womens seats)
