@@ -14,12 +14,12 @@ wlcm_lbl = Label(root, text = "Welcome To Bus Ticket Booking Center", font = ("A
 wlcm_lbl.grid(row = 0, column = 0, columnspan = 2)
 
 # seat selection-deselection changes
-num_low = num_up = 0     # no. of seats selected
+num_low = num_up = num_female = 0     # no. of seats selected
 
 # LOWER BERTH
 def select_low(seatnum):
     seat_btn = seat_dict_low[seatnum]
-    seat_btn.config(bg = "green", command = lambda n=seatnum: deselect_low(n))
+    seat_btn.config(bg = "green", command = lambda n=seatnum: f_select_low(n))
     global cost_counter, num_low, num_up
 
     num_low += 1
@@ -27,20 +27,31 @@ def select_low(seatnum):
     cost = num_low*500 + num_up*400
     cost_counter.config(text = f"{num} seat(s) selected --> total cost = ₹{cost}")
 
+def f_select_low(seatnum):                  # double click for female seat
+    global num_female
+    num_female += 1
+    seat_btn = seat_dict_low[seatnum]
+    seat_btn.config(bg = "pink", command = lambda n=seatnum: deselect_low(n))
+
+    f_seat_count.config(text = f"{num_female} female seat(s) selected")
+
 def deselect_low(seatnum):
     seat_btn = seat_dict_low[seatnum]
     seat_btn.config(bg = "white", command = lambda n=seatnum: select_low(n))
-    global cost_counter, num_low, num_up
+    global cost_counter, num_low, num_up, num_female
 
+    num_female -= 1
     num_low -= 1
     num = num_low + num_up
     cost = num_low*500 + num_up*400
     cost_counter.config(text = f"{num} seat(s) selected --> total cost = ₹{cost}")
 
+    f_seat_count.config(text = f"{num_female} female seat(s) selected")
+
 # UPPER BERTH
 def select_up(seatnum):
     seat_btn = seat_dict_up[seatnum]
-    seat_btn.config(bg = "green", command = lambda n=seatnum: deselect_up(n))
+    seat_btn.config(bg = "green", command = lambda n=seatnum: f_select_up(n))
     global cost_counter, num_low, num_up
 
     num_up += 1
@@ -48,15 +59,26 @@ def select_up(seatnum):
     cost = num_low*500 + num_up*400
     cost_counter.config(text = f"{num} seat(s) selected --> total cost = ₹{cost}")
 
+def f_select_up(seatnum):                   # double click for female seat
+    global num_female
+    num_female += 1
+    seat_btn = seat_dict_up[seatnum]
+    seat_btn.config(bg = "pink", command = lambda n=seatnum: deselect_up(n))
+
+    f_seat_count.config(text = f"{num_female} female seat(s) selected")
+
 def deselect_up(seatnum):
     seat_btn = seat_dict_up[seatnum]
     seat_btn.config(bg = "white", command = lambda n=seatnum: select_up(n))
-    global cost_counter, num_low, num_up
+    global cost_counter, num_low, num_up, num_female
 
+    num_female -= 1
     num_up -= 1
     num = num_low + num_up
     cost = num_low*500 + num_up*400
     cost_counter.config(text = f"{num} seat(s) selected --> total cost = ₹{cost}")
+
+    f_seat_count.config(text = f"{num_female} female seat(s) selected")
 
 
 
@@ -123,7 +145,6 @@ for i in range(13, 16):
     else:
         seat_btn.grid(row = 5, column = i-12)
         seat_dict_low[i] = seat_btn
-
 
 
 
@@ -197,18 +218,20 @@ for i in range(13, 16):
 cost_counter = Label(root, text = f"0 seat(s) selected --> total cost = ₹0", font = ("Arial", 20))
 cost_counter.grid(row = 2, column = 0)
 
-Label(root, text = "").grid(row = 3, column = 0)
+Label(root, text = "").grid(row = 4, column = 0)
 
 
 # after selection booking
 def book():
-    global num_up, num_low
+    global num_up, num_low, num_female
     upper_frame.grid_forget()
     lower_frame.grid_forget()
     book_btn.grid_forget()
     wlcm_lbl.grid_forget()
     cost_counter.grid_forget()
-    
+    f_seat_lbl.grid_forget()
+    f_seat_count.grid_forget()
+
     ticket_cost = num_low*500 + num_up*400
     total_cost = ticket_cost*1.18
 
@@ -216,19 +239,27 @@ def book():
 
     Label(root, text = f"{num_up} Upper Berth Seat(s)", font = ("Calibri", 25)).grid(row = 1, column = 0)
     Label(root, text = f"{num_low} Lower Berth Seat(s)", font = ("Calibri", 25)).grid(row = 1, column = 1)
-    
+    Label(root, text = f"{num_female} Female Seat(s)", font = ("Calibri", 25)).grid(row = 2, column = 0)
+
     # price breakdown
-    Label(root, text = "\nPrice Breakdown:", font = ("Calibri", 25)).grid(row = 2, column = 0)
-    Label(root, text = f"Ticket Price   : ₹{ticket_cost:.2f}", font = ("Calibri", 25)).grid(row = 3, column = 0)
-    Label(root, text = f"Taxes (18% GST): ₹{ticket_cost*0.18:.2f}", font = ("Calibri", 25)).grid(row = 4, column = 0)
-    Label(root, text = f"Total Price    : ₹{total_cost:.2f}", font = ("Calibri", 25)).grid(row = 5, column = 0)
+    Label(root, text = "\nPrice Breakdown:", font = ("Calibri", 25)).grid(row = 3, column = 0)
+    Label(root, text = f"Ticket Price   : ₹{ticket_cost:.2f}", font = ("Calibri", 25)).grid(row = 4, column = 0)
+    Label(root, text = f"Taxes (18% GST): ₹{ticket_cost*0.18:.2f}", font = ("Calibri", 25)).grid(row = 5, column = 0)
+    Label(root, text = f"Total Price    : ₹{total_cost:.2f}", font = ("Calibri", 25)).grid(row = 6, column = 0)
 
-
-    Label(root, text = "\nThank You For Chossing BlueBus, India\'s best bus service", font = ("Calibri", 25), pady = 30).grid(row = 6, column = 0, columnspan = 2)
+    Label(root, text = "\nThank You For Chossing BlueBus, India\'s best bus service", font = ("Calibri", 25), pady = 30).grid(row = 7, column = 0, columnspan = 2)
     
 
 book_btn = Button(root, text = "Click To Book", font = ("Arial", 15), command = book, bg = "#266CC8", fg = "white")
-book_btn.grid(row = 4, column = 0)
+book_btn.grid(row = 5, column = 0)
+
+
+# female seat widgets 
+f_seat_lbl = Label(root, text = "Double Click to select seat for Females", font = ("Arial", 15))
+f_seat_lbl.grid(row = 2, column = 1)
+
+f_seat_count = Label(root, text = "0 female seat(s) selected", font = ("Arial", 20))
+f_seat_count.grid(row = 3, column = 0)
 
 
 # main window loop
