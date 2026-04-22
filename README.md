@@ -11,12 +11,9 @@ answers on a scale of 1-5 (1-Strongly Disagree, 2-Disagre, 3-Neutral, 4-Agree, 5
 
 display prompt to user
 
-store test answers and results in databse
-
-check if similar test already given (same answers), if so directly show saved prompt in database
-
+# stuff done
 store questions in database
 
-# stuff done
+store test answers and results in databse
 
 api key to communicate with gemini
