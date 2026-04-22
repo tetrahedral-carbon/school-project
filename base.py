@@ -160,32 +160,33 @@ if submit==True:
 class DB:
     def __init__(self):
         # info about host, user, database
-        db = mcon.connect(
-            host = "localhost",
-            user = "root",
-            passwd = "ilikemysql",
-            database = "pythonproject"
+        self.db = mcon.connect(
+            host = "database-1.c09cucuk2ssf.us-east-1.rds.amazonaws.com",
+            user = "admin",
+            passwd = "aws123services!456",
+            database = "mydb"
         )
 
-        self.mycursor = db.cursor()     # mycursor is used execute read and write queries
-    
+        self.mycursor = self.db.cursor()     # mycursor is used execute read and write queries   
 
     # retrieves questions from database (APART FROM PERSONALITY)
     def get_q(self):
+        mycursor = self.db.cursor()
+
         # each question comes in the form of a single-element tuple
         
         q_list = []     # creating list to contain all questions
 
         # second table - skills questions
-        self.mycursor.execute("SELECT question FROM skills_questions")
+        mycursor.execute("SELECT question FROM skills_questions")
         
         for qt in self.mycursor:
             q_list.append(qt[0])
         
         # third table - interest questions
-        self.mycursor.execute("SELECT question FROM interest_questions")
+        mycursor.execute("SELECT question FROM interest_questions")
         
-        for qt in self.mycursor:
+        for qt in mycursor:
             q_list.append(qt[0])
 
         # returning list of questions for further processing
@@ -194,12 +195,13 @@ class DB:
 
     # retrieves personality questions and options from personality table
     def get_qo_personality(self):
-        self.mycursor.execute("SELECT question, option1, option2, option3, option4 FROM personality_questions")
+        mycursor = self.db.cursor()
+        mycursor.execute("SELECT question, option1, option2, option3, option4 FROM personality_questions")
 
         qp_list = []            # creating list to store personality questions
         qp_options = []         # creating list to store options
 
-        for qot in self.mycursor:
+        for qot in mycursor:
             qp_list.append(qot[0])
             qp_options.append((qot[1], qot[2], qot[3], qot[4]))
         
@@ -209,7 +211,8 @@ class DB:
     
     # stores user info and answers (in the form of string) in database
     def store_ans(self, data_list):
-        self.data_list = data_list      # data_list should contain 62 elements, 1 name, 1 guessed career and 60 answers
+        mycursor = self.db.cursor()
+        # data_list should contain 62 elements, 1 name, 1 guessed career and 60 answers
         
         # placeholders and columns generator
         placeholders = ", ".join(["%s"] * 62)
@@ -217,7 +220,7 @@ class DB:
         columns = "user_name, user_guess" + q_columns
 
         sql_query = f"INSERT INTO answers ({columns}) VALUES ({placeholders})"
-        self.mycursor.execute(sql_query, data_list)
+        mycursor.execute(sql_query, data_list)
 
 
 class AI:
@@ -242,9 +245,9 @@ class AI:
 
 # sample usage of AI class
 # my_object = AI({"initial": "this dictionary contains a set of questions and answers on a scale of 1 to 5 (1-strongly disagree, 5-strongly agree). recommend me 3 suitable career options", 
-#                 "i am very honest": 5, 
-#                 "i like cars": 2, 
-#                 "i am very social": 3})
+#                  "i am very honest": 5, 
+#                  "i like cars": 2, 
+#                  "i am very social": 3})
 
 # my_object.pass_ai_data()
 # answer = my_object.pass_result()
