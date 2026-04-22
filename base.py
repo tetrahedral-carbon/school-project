@@ -4,9 +4,6 @@ from CTkMessagebox import CTkMessagebox  #customtkinter doesnt have a messagebox
 from google import genai
 import mysql.connector as mcon
 
-#modules imported
-import customtkinter as ctk
-from CTkMessagebox import CTkMessagebox     #customtkinter doesnt have a messagebox
 
 #intialising of variables used multiple times
 h,w=60,50
