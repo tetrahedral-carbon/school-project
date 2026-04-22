@@ -169,17 +169,12 @@ class DB:
 
         self.mycursor = db.cursor()     # mycursor is used execute read and write queries
     
-    # retrieves questions from database
+
+    # retrieves questions from database (APART FROM PERSONALITY)
     def get_q(self):
         # each question comes in the form of a single-element tuple
         
         q_list = []     # creating list to contain all questions
-
-        # first table - personality questions
-        self.mycursor.execute("SELECT question FROM personality_questions")
-        
-        for qt in self.mycursor:
-            q_list.append(qt[0])
 
         # second table - skills questions
         self.mycursor.execute("SELECT question FROM skills_questions")
@@ -193,9 +188,23 @@ class DB:
         for qt in self.mycursor:
             q_list.append(qt[0])
 
-
         # returning list of questions for further processing
         return q_list
+
+
+    # retrieves personality questions and options from personality table
+    def get_qo_personality(self):
+        self.mycursor.execute("SELECT question, option1, option2, option3, option4 FROM personality_questions")
+
+        qp_list = []            # creating list to store personality questions
+        qp_options = []         # creating list to store options
+
+        for qot in self.mycursor:
+            qp_list.append(qot[0])
+            qp_options.append((qot[1], qot[2], qot[3], qot[4]))
+        
+        # returning tuple of questions, options for further processing
+        return (qp_list, qp_options)
     
     
     # stores user info and answers (in the form of string) in database
