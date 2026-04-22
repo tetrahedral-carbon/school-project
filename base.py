@@ -183,11 +183,11 @@ class DB:
     
     # stores user info and answers (in the form of string) in database
     def store_ans(self, data_list):
-        self.data_list = data_list      # data_list should contain 21 elements, 1 name and 20 answers
+        self.data_list = data_list      # data_list should contain 22 elements, 1 name, 1 guessed career and 20 answers
         
         # placeholders and columns generator
-        placeholders = ", ".join(["%s"] * 21)
-        columns = "user_name, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14, q15, q16, q17, q18, q19, q20"
+        placeholders = ", ".join(["%s"] * 22)
+        columns = "user_name, user_guess, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14, q15, q16, q17, q18, q19, q20"
 
         sql_query = f"INSERT INTO answers ({columns}) VALUES ({placeholders})"
         self.mycursor.execute(sql_query, data_list)
