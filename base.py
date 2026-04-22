@@ -1,6 +1,8 @@
 #modules imported
 import customtkinter as ctk
 from CTkMessagebox import CTkMessagebox  #customtkinter doesnt have a messagebox
+from google import genai
+import mysql.connector as mcon
 
 #intialising of variables used multiple times
 h,w=60,50
@@ -154,8 +156,42 @@ if submit==True:
     #first call of quiz window
     quiz_window()
 
+
 class DB:
-    pass
+    def __init__(self):
+        # info about host, user, database
+        db = mcon.connect(
+            host = "localhost",
+            user = "root",
+            passwd = "ilikemysql",
+            database = "pythonproject"
+        )
+
+        self.mycursor = db.cursor()     # mycursor is used execute read and write queries
+    
+    # retrieves questions from database
+    def get_q(self):
+        self.mycursor.execute("SELECT question FROM questions")    # each question comes in the form of a single-element tuple
+        
+        # creating list to contain all questions
+        q_list = []
+        for qt in self.mycursor:
+            q_list.append(qt[0])
+        
+        # returning list of questions for further processing
+        return q_list
+    
+    # stores user info and answers (in the form of string) in database
+    def store_ans(self, data_list):
+        self.data_list = data_list      # data_list should contain 21 elements, 1 name and 20 answers
+        
+        # placeholders and columns generator
+        placeholders = ", ".join(["%s"] * 21)
+        columns = "user_name, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14, q15, q16, q17, q18, q19, q20"
+
+        sql_query = f"INSERT INTO answers ({columns}) VALUES ({placeholders})"
+        self.mycursor.execute(sql_query, data_list)
+
 
 class AI:
     def __init__(self, info_dict):
@@ -164,7 +200,6 @@ class AI:
     
     # gives ai model the user's answers and gets the output
     def give_ai_data(self):
-        from google import genai
         client = genai.Client(api_key="AIzaSyBp5XGXWTFJ4JFXQLUpasLYcoVhP8w5SyU")
         
         # generating ai output
