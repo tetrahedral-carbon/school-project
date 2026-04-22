@@ -22,7 +22,7 @@ db --> database variable
 
 mycursor --> cursor object for db
 
-q-list --> list of questions
+q_list --> list of questions
 
 data_list --> list of data to be stored in db
 
