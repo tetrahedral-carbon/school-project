@@ -171,23 +171,41 @@ class DB:
     
     # retrieves questions from database
     def get_q(self):
-        self.mycursor.execute("SELECT question FROM questions")    # each question comes in the form of a single-element tuple
+        # each question comes in the form of a single-element tuple
         
-        # creating list to contain all questions
-        q_list = []
+        q_list = []     # creating list to contain all questions
+
+        # first table - personality questions
+        self.mycursor.execute("SELECT question FROM personality_questions")
+        
+        for qt in self.mycursor:
+            q_list.append(qt[0])
+
+        # second table - skills questions
+        self.mycursor.execute("SELECT question FROM skills_questions")
+        
         for qt in self.mycursor:
             q_list.append(qt[0])
         
+        # third table - interest questions
+        self.mycursor.execute("SELECT question FROM interest_questions")
+        
+        for qt in self.mycursor:
+            q_list.append(qt[0])
+
+
         # returning list of questions for further processing
         return q_list
     
+    
     # stores user info and answers (in the form of string) in database
     def store_ans(self, data_list):
-        self.data_list = data_list      # data_list should contain 22 elements, 1 name, 1 guessed career and 20 answers
+        self.data_list = data_list      # data_list should contain 62 elements, 1 name, 1 guessed career and 60 answers
         
         # placeholders and columns generator
-        placeholders = ", ".join(["%s"] * 22)
-        columns = "user_name, user_guess, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14, q15, q16, q17, q18, q19, q20"
+        placeholders = ", ".join(["%s"] * 62)
+        q_columns = ", ".join([f"q{i}" for i in range(1, 61)])
+        columns = "user_name, user_guess" + q_columns
 
         sql_query = f"INSERT INTO answers ({columns}) VALUES ({placeholders})"
         self.mycursor.execute(sql_query, data_list)
