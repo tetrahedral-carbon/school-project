@@ -4,44 +4,59 @@ from CTkMessagebox import CTkMessagebox  #customtkinter doesnt have a messagebox
 from google import genai
 import mysql.connector as mcon
 
+
 #intialising of variables used multiple times
 h,w=60,50
+button_design=("Arial",20,"bold")
+entry_design=("Arial",25,"italic")
 
+#user reference material default values
+preview_text=""     
+usernames_with_previews={"hi":"games"}              
+submit=False                            
 
 
 #intro window function
-def intro_window():
-    global submit
-    #intro window initialising
-    intro_gui=ctk.CTk()
-    #name variable for entry
-    name=ctk.StringVar(master=intro_gui)
-
-    #list of usernames for reference later
-    list_of_usernames=[]
-
-    #default submit value
-    submit=False
+def intro_window(): 
+    intro_gui=ctk.CTk()                     
     
-    #intro button functions 
+    name=ctk.StringVar(master=intro_gui)     #name variable for entry
     
-    def quit_window():
-        #needed for calling functions
-        global submit
-        submit=False
-        intro_gui.destroy()
     
+    #intro button functions
     def submit_details():
         global submit
-        submit=True
-        if name.get() not in list_of_usernames:
-                user_name=name.get()
-                list_of_usernames.append(user_name)
+
+        #test to check if name is non empty
+        
+        if bool(name.get()) == False:                      
+             CTkMessagebox(title="username not entered",message="Enter a Valid username")
+
+        #test to check if username is already available
+        elif name.get() in usernames_with_previews:     
+            CTkMessagebox(title="username not available",message="Username already in use,Enter a new one")
+            name_entry.delete(0,"end")                   
+        
+        #executes if all tests work
         else:
-            CTkMessagebox(title="username not available",
-                           message="Username already in use,Enter a new one")
-            name_entry.delete(0,"END")#deletes the invalid name
+            submit=True
+            user_name=name.get()
+            preview_text=preveiw_textbox.get("0.0","end")
+            usernames_with_previews[user_name]=preview_text 
+            intro_gui.destroy()
+    
+    #button functions is delete text easily
+    def delete_name():
+         name_entry.delete("0","end")
+         
+     
+    def delete_preview():
+         preveiw_textbox.delete("0.0","end")      
+
+    def quit_window():
         intro_gui.destroy()
+
+
 
 
     #intro window formatting
@@ -49,27 +64,77 @@ def intro_window():
     intro_gui.geometry("500x500")
     intro_gui._set_appearance_mode("dark")
 
-    #intro window widgets
+
+    #intstruction widgets
+    instructions_textbox=ctk.CTkTextbox(master=intro_gui,font=("Arial",30,"bold"),height=350,width=1090)
+    
+    info_list=["Hi welcome to our career guidance quiz\n\n",
+               "LETS GO OVER HOW THIS WORKS:\n",
+               "1)you get an option to choose one of our three quizzes\n",
+               "which we have designed to predict an career appropriate for you\n\n",
+               
+               "2)you can also add a preveiw on what career you think you would do in\n", 
+               "the textbox below\n\n",
+               
+               "3)answer truthfully it will allow us to predict an appropriate\n",
+                "career without inaccuracies,remember there are no wrong answers\n\n",
+               
+                "4)dont worry you come back to see the other quizzes later\n"]
+    
+    text_inserter=ctk.StringVar(master=intro_gui)   #placeholder to insert text into text box
+    for text in info_list[::-1]:                    #list in reverse so text starts being added from top
+        text_inserter.set(text)               
+        instructions_textbox.insert("0.0",text_inserter.get())      #adds text to textbox
+    else:
+         instructions_textbox.configure(state="disabled")   #disables textbox so it cant be altered
+
+
+    #name related widgets
     name_label=ctk.CTkLabel(master=intro_gui,
-                            text="Enter your name"
+                            text="Enter your name to get started",
+                            font=button_design
                             ) 
     name_entry=ctk.CTkEntry(master=intro_gui,
-                            font=("Arial",20,"bold"),
-                            textvariable=name
+                            font=entry_design,
+                            textvariable=name,
                             )
+    name_delete=ctk.CTkButton(master=intro_gui,font=button_design,text="delete name",command=delete_name)
+
+    #preveiw related widgets
+    preveiw_instructions=ctk.CTkLabel(master=intro_gui,font=entry_design,text="enter a preview of the career you think you would take (optional) \n you can comapare it with the quiz result")
+    preveiw_textbox=ctk.CTkTextbox(master=intro_gui)
+    preview_delete=ctk.CTkButton(master=intro_gui,font=button_design,text="delete Preveiw",command=delete_preview)
+
+    #submit and quit window buttons
     submit_button=ctk.CTkButton(master=intro_gui,
                                 text="Submit",
-                                command=submit_details
+                                command=submit_details,
+                                font=button_design
                             )
     quit_button=ctk.CTkButton(master=intro_gui,
                                 text="quit",
-                                command=quit
+                                command=quit_window,
+                                font=button_design
                                 )
-
+    
+    
+    
+    
+                                   
+                                   
+         
+    
     #widgets display
+    instructions_textbox.pack()
     
     name_label.pack()
     name_entry.pack()
+    name_delete.pack()
+    
+    preveiw_instructions.pack()
+    preveiw_textbox.pack()    
+    preview_delete.pack()
+    
     submit_button.pack()
     quit_button.pack()
 
@@ -131,30 +196,22 @@ def quiz_window():
                                                 )
 
 
-
-
-
     #widgets display
     quiz_gui.personality_button.pack()
     quiz_gui.interests_button.pack()
     quiz_gui.skills_button.pack()
     quiz_gui.frame.pack()
 
-
-
-
-
-
     #quiz window display
     quiz_gui.mainloop()
-
 
 # call of intro window
 intro_window()
 
 if submit==True:
-    #first call of quiz window
     quiz_window()
+
+
 
 
 class DB:
