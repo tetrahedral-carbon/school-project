@@ -237,7 +237,7 @@ class DB:
         # second table - skills questions
         mycursor.execute("SELECT question FROM skills_questions")
         
-        for qt in self.mycursor:
+        for qt in mycursor:
             q_list.append(qt[0])
         
         # third table - interest questions
