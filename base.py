@@ -9,6 +9,7 @@ import mysql.connector as mcon
 h,w=60,50
 button_design=("Arial",20,"bold")
 entry_design=("Arial",25,"italic")
+question_design=("Marker",20,"italic")
 
 #user reference material default values
 preview_text=""     
@@ -157,7 +158,30 @@ def quiz_window():
     def interests_quiz():
             pass
     def skills_quiz():
-        pass
+        quiz_gui.destroy
+        skills_window=ctk.CTk()
+        skills_window.geometry("400x400")
+
+        options_dict={}
+        question=ctk.StringVar()
+        for i in range(15):
+            question.set(value="placeholder"+str(i))            
+            question_frame=ctk.CTkFrame(master=skills_window)
+            question_label=ctk.CTkLabel(master=question_frame,
+                                        textvariable=question,
+                                        font=question_design)
+            question_label.pack(side="left")
+            for j in range(5):
+                storing_list=[]
+                option=ctk.CTkCheckBox(master=question_frame,
+                                        text="option"+str(j+1),
+                                        onvalue=j+1,
+                                        )
+                option.pack(padx=20,side="left")
+                storing_list.append(option)
+            options_dict[question.get()]=storing_list
+            question_frame.pack()
+        skills_window.mainloop()
 
         
     #quiz window formatting 
@@ -167,50 +191,43 @@ def quiz_window():
 
 
     #frame widget to place buttons
-    quiz_gui.frame=ctk.CTkFrame(master=quiz_gui)
-
-
-
+    frame=ctk.CTkFrame(master=quiz_gui)
 
 
     #starting quiz buttons
-    quiz_gui.personality_button=ctk.CTkButton(master=quiz_gui.frame,
-                                                text="Personality quiz (with AI)",
-                                                height=h,
-                                                width=w,
-                                                command=personality_quiz
+    personality_button=ctk.CTkButton(master=frame,
+                                    text="Personality quiz",
+                                    height=h,
+                                    width=w,
+                                    command=personality_quiz
                                                 )
-    quiz_gui.interests_button=ctk.CTkButton(master=quiz_gui.frame,
-                                                
-                                                text="interests quiz",
-                                                height=h,
-                                                width=w,
-                                                command=interests_quiz
-                                                )
-    quiz_gui.skills_button=ctk.CTkButton(master=quiz_gui.frame,
-                                                
-                                                text="skills quiz ",
-                                                height=h,
-                                                width=w,
-                                                command=skills_quiz
-                                                )
+    interests_button=ctk.CTkButton(master=frame,
+                                   text="interests quiz",
+                                   height=h,
+                                   width=w,
+                                   command=interests_quiz
+                                    )
+    skills_button=ctk.CTkButton(master=frame,
+                                text="skills quiz",
+                                height=h,
+                                width=w,
+                                command=skills_quiz
+                                )
 
-
-    #widgets display
-    quiz_gui.personality_button.pack()
-    quiz_gui.interests_button.pack()
-    quiz_gui.skills_button.pack()
-    quiz_gui.frame.pack()
+   #widgets display
+    personality_button.pack()
+    interests_button.pack()
+    skills_button.pack()
+    frame.pack()
 
     #quiz window display
     quiz_gui.mainloop()
 
 # call of intro window
-intro_window()
+#intro_window()
 
-if submit==True:
-    quiz_window()
 
+quiz_window()
 
 
 
