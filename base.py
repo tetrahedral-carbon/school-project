@@ -9,6 +9,7 @@ import mysql.connector as mcon
 h,w=60,50
 button_design=("Arial",20,"bold")
 entry_design=("Arial",25,"italic")
+question_design=("Marker",20,"italic")
 
 #user reference material default values
 preview_text=""     
@@ -159,7 +160,7 @@ def quiz_window():
     def skills_quiz():
         quiz_gui.destroy
         skills_window=ctk.CTk()
-        skills_window.geometry("400x300")
+        skills_window.geometry("400x400")
 
         options_dict={}
         question=ctk.StringVar()
