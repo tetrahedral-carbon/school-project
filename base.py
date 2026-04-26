@@ -91,41 +91,65 @@ class AI:
         return self.ai_result
     
 
-# sample usage of AI class
-# my_object = AI({"initial": "this dictionary contains a set of questions and answers on a scale of 1 to 5 (1-strongly disagree, 5-strongly agree). recommend me 3 suitable career options", 
-#                  "i am very honest": 5, 
-#                  "i like cars": 2, 
-#                  "i am very social": 3})
-
-# my_object.pass_ai_data()
-# answer = my_object.pass_result()
-# print(answer)
+#sample usage of AI class
+#my_object = AI({"initial": "this dictionary contains a set of questions and answers on a scale of 1 to 5 (1-strongly disagree, 5-strongly agree). recommend me 3 suitable career options", 
+#                 "i am very honest": 5, 
+#                 "i like cars": 2, 
+#                 "i am very social": 3})
+#my_object.give_ai_data()
+#answer = my_object.pass_result()
+#print(answer)
 
 
 
 ''' USER INTERFACE PART OF THE PROGRAM '''
 
+
+### use ttkbootstrap and change color palette
+
+
 # Variables used for formatting
-font_styles={ "labels":"Arial", "buttons":"Helvitica"}
-font_sizes={ "labels":25, "significant_button":20,"insignificant button":10}
+font_styles={ "labels":("Arial",25),
+             "button 1":("Helvitica",20),
+             "button 2":("Helvitica",10),
+             "entry box":("Arial",20),
+             "text box":("Park Avenue", 20, "italic")
+             }
+
+font_sizes={ "labels":25, 
+            "significant_button":20,
+            "insignificant button":10}
+
+color_palette={
+    "frame fg":"black",
+    "text color 1":"green",
+    "text color 2":"orange",
+    "border color":"purple",
+    "fg color 1":"black",
+    "fg color 2":"black",
+    "button hover color":"red"
+              }
+border_width=5
 
 def intro_window():
 
     # window Initialisation and Formatting
 
     intro_gui = ctk.CTk()
-    
     intro_gui.title("Career Suggestion Quiz")
     intro_gui.geometry("700X600")
     ctk.set_appearance_mode("dark")
 
-    intro_gui_frame=ctk.CTkFrame(intro_gui, fg_color="black")
+
+    intro_gui_frame=ctk.CTkFrame(intro_gui, fg_color=color_palette["frame fg"])
     intro_gui_frame.pack(fill="both",expand=True)
 
-    #variables used for storing information
+
+    # variables used for storing information
     name_var = ctk.StringVar()          #varible to get username
     usernames_with_previews={}          #variable to link username wIth previews                   
     
+
     # Logic Functions
     def submit_details():
         username = name_var.get().strip()
@@ -137,16 +161,20 @@ def intro_window():
             name_entry.delete(0, "end")
         else:
             preview_text = preview_textbox.get("1.0", "end-1c")     #extracts preview
-            usernames_with_previews[username] = preview_text        #links username to prview
+            usernames_with_previews[username] = preview_text        #links username to preview
             intro_gui.destroy()                                     #destroys the window
-            #quiz_gui()                                             #calls next window
+            ###quiz_gui()                                           #calls next window
 
     # UI Components 
     
-    #  Header & Instructions
-    header_label = ctk.CTkLabel(intro_gui_frame, text="Career Guidance Quiz", font=("Helvetica", 40, "bold"), corner_radius=15,
-                                text_color="black", fg_color="dark green")      #custom font style to be used
+
+    #  Header 
+    header_label = ctk.CTkLabel(intro_gui_frame, text="Career Guidance Quiz",
+                                font=("Helvetica", 40, "bold"), corner_radius=15,
+                                text_color="#230DCE", fg_color="#FFFFFF")      ###custom font style to be used
     header_label.pack(pady=(20, 10))
+
+    # Instructions
 
     inst_text = (
         "WELCOME TO YOUR FUTURE\n\n"
@@ -155,52 +183,68 @@ def intro_window():
         "3. Answer truthfully—there are no wrong answers!\n"
         "4. You can always come back and try different quizzes later."
     )
-    
-    instructions_box = ctk.CTkTextbox(intro_gui_frame, width=700, height=185, font=("Park Avenue", 20, "italic"), corner_radius=20, 
-                                      text_color="green", fg_color="#000000", border_color="#400551", border_width=5)
+    instructions_box = ctk.CTkTextbox(intro_gui_frame, width=700, height=185, 
+                                      font=font_styles["text box"], corner_radius=20, 
+                                      text_color=color_palette["text color 1"], fg_color=color_palette["fg color 1"], 
+                                      border_color=color_palette["border color"], border_width=3)
     instructions_box.insert("0.0", inst_text)           #inserts text into textbox
     instructions_box.configure(state="disabled")        #configures it so it can't be changed
     instructions_box.pack(pady=10)
 
+
     # Input Section (Using a Frame for better grouping)
     input_frame = ctk.CTkFrame(intro_gui_frame, fg_color="transparent")
-    input_frame.pack(pady=20, padx=40, fill="x")
+    input_frame.pack(pady=20, padx=400)
 
-    ctk.CTkLabel(input_frame, text="Username", font=(font_styles["labels"], 25, "bold"), corner_radius=15, 
-                 text_color="green", fg_color="black").grid(row=0, column=0, sticky="w")
-    
-    name_entry = ctk.CTkEntry(input_frame, textvariable=name_var, placeholder_text="Enter name...", width=300 , font=("Helvitica",20,"bold"),
-                              fg_color="black", text_color="orange")
-    name_entry.grid(row=1, column=0, pady=(5, 10), padx=(0, 10))
+
+    ctk.CTkLabel(input_frame, text="Username", 
+                 font=font_styles["labels"], corner_radius=15, 
+                 text_color=color_palette["text color 1"], fg_color=color_palette["fg color 1"]).grid(row=0, column=4, sticky="w")
+    name_entry = ctk.CTkEntry(input_frame, textvariable=name_var, 
+                              width=300 , font=font_styles["entry box"],
+                              fg_color=color_palette["fg color 2"], text_color=color_palette["text color 2"])
+    name_entry.grid(row=1, column=4, pady=(5, 10), padx=(0, 10))
+
 
     btn_clear_name = ctk.CTkButton(input_frame, text="Clear", width=80, 
-                                   fg_color="transparent", border_width=1,
+                                   fg_color=color_palette["fg color 1"],hover_color=color_palette["button hover color"],
+                                   text_color=color_palette["text color 1"], border_width=1,
                                    command=lambda:name_entry.delete(0, "end"))
-    btn_clear_name.grid(row=1, column=1, pady=(5, 10))
+    btn_clear_name.grid(row=1, column=5, pady=(5, 10))
+
 
     # Career Preview Section
-    ctk.CTkLabel(input_frame, text="Career Preview (Optional)", font=(font_styles["labels"], 25, "bold")
-                 , text_color="green").grid(row=2, column=0, sticky="w")
+    ctk.CTkLabel(input_frame, text="Career Preview (Optional)", 
+                 font=font_styles["labels"]
+                 , text_color=color_palette["text color 1"]).grid(row=2, column=4, sticky="w")
     
-    preview_textbox = ctk.CTkTextbox(input_frame, height=100,
-                                     text_color="orange", fg_color="#000000", border_color="purple",border_width=5)
-    preview_textbox.grid(row=3, column=0, columnspan=2, pady=(5, 10), sticky="nsew")
+    preview_textbox = ctk.CTkTextbox(input_frame, height=100,  font=font_styles["text box"],
+                                     text_color=color_palette["text color 2"], fg_color=color_palette["fg color 1"], 
+                                     border_color=color_palette["border color"],border_width=3)
+    preview_textbox.grid(row=3, column=4, columnspan=2, pady=(5, 10), sticky="nsew")
+
 
     btn_clear_preview = ctk.CTkButton(input_frame, text="Clear Preview", width=100,
-                                      fg_color="transparent", border_width=1,
+                                      fg_color=color_palette["fg color 1"], hover_color=color_palette["button hover color"],
+                                        border_width=1,
                                       command=lambda:preview_textbox.delete("1.0", "end"))
-    btn_clear_preview.grid(row=4, column=0, sticky="w")
+    btn_clear_preview.grid(row=4, column=4, sticky="w")
 
     # Action Buttons 
+
     button_container = ctk.CTkFrame(intro_gui_frame, fg_color="transparent")
     button_container.pack(side="bottom", pady=30)
 
-    submit_btn = ctk.CTkButton(button_container, text="Start Quiz", width=200, height=40,
+
+    submit_btn = ctk.CTkButton(button_container, text="Submit", 
+                               width=200, height=40,
                                fg_color="#2fa572", hover_color="#106a43",
                                command=submit_details)
     submit_btn.pack(side="left", padx=10)
 
-    quit_btn = ctk.CTkButton(button_container, text="Exit", width=100, height=40,
+
+    quit_btn = ctk.CTkButton(button_container, text="Exit", 
+                             width=100, height=40,
                              fg_color="#0f0404", hover_color="#802c2c", # Red tones
                              command=intro_gui.destroy)
     quit_btn.pack(side="left", padx=10)
