@@ -121,12 +121,12 @@ font_sizes={ "labels":25,
             "insignificant button":10}
 
 color_palette={
-    "frame fg":"black",
-    "text color 1":"green",
-    "text color 2":"orange",
-    "border color":"purple",
-    "fg color 1":"black",
-    "fg color 2":"black",
+    "frame fg":"#0D0D0D",
+    "text color 1":"#EAEAEA",
+    "text color 2":"#A0A0A0",
+    "border color":"#9B5DE5",
+    "fg color 1":"#151515",
+    "fg color 2":"#1A1A1A",
     "button hover color":"red"
               }
 border_width=5
