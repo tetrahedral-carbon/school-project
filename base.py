@@ -9,9 +9,9 @@ class DB:
     def __init__(self):
         # info about host, user, database
         self.db = mcon.connect(
-            host = "database-1.c09cucuk2ssf.us-east-1.rds.amazonaws.com",
-            user = "admin",
-            passwd = "aws123services!456",
+            host = "localhost",
+            user = "root",
+            passwd = "ilikemysql",
             database = "mydb"
         )
 
