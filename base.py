@@ -69,6 +69,7 @@ class DB:
 
         sql_query = f"INSERT INTO answers ({columns}) VALUES ({placeholders})"
         mycursor.execute(sql_query, data_list)
+        self.db.commit()
 
 
 class AI:
