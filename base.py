@@ -122,12 +122,14 @@ font_sizes={ "labels":25,
 
 color_palette={
     "frame fg":"#0D0D0D",
+    "Quiz frame fg": "#211A1A",
     "text color 1":"#EAEAEA",
     "text color 2":"#A0A0A0",
     "border color":"#9B5DE5",
     "fg color 1":"#151515",
     "fg color 2":"#1A1A1A",
-    "button hover color":"red"
+
+    "clear button hover color":"red"
               }
 border_width=5
 
@@ -136,7 +138,7 @@ def intro_window():
     # window Initialisation and Formatting
 
     intro_gui = ctk.CTk()
-    intro_gui.title("Career Suggestion Quiz")
+    intro_gui.title("Career Compass")
     intro_gui.geometry("700X600")
     ctk.set_appearance_mode("dark")
 
@@ -163,7 +165,7 @@ def intro_window():
             preview_text = preview_textbox.get("1.0", "end-1c")     #extracts preview
             usernames_with_previews[username] = preview_text        #links username to preview
             intro_gui.destroy()                                     #destroys the window
-            ###quiz_gui()                                           #calls next window
+            quiz_window()                                              #calls next window
 
     # UI Components 
     
@@ -207,7 +209,7 @@ def intro_window():
 
 
     btn_clear_name = ctk.CTkButton(input_frame, text="Clear", width=80, 
-                                   fg_color=color_palette["fg color 1"],hover_color=color_palette["button hover color"],
+                                   fg_color=color_palette["fg color 1"],hover_color=color_palette["clear button hover color"],
                                    text_color=color_palette["text color 1"], border_width=1,
                                    command=lambda:name_entry.delete(0, "end"))
     btn_clear_name.grid(row=1, column=5, pady=(5, 10))
@@ -225,7 +227,7 @@ def intro_window():
 
 
     btn_clear_preview = ctk.CTkButton(input_frame, text="Clear Preview", width=100,
-                                      fg_color=color_palette["fg color 1"], hover_color=color_palette["button hover color"],
+                                      fg_color=color_palette["fg color 1"], hover_color=color_palette["clear button hover color"],
                                         border_width=1,
                                       command=lambda:preview_textbox.delete("1.0", "end"))
     btn_clear_preview.grid(row=4, column=4, sticky="w")
@@ -250,5 +252,56 @@ def intro_window():
     quit_btn.pack(side="left", padx=10)
 
     intro_gui.mainloop()
+
+
+def quiz_window():
+
+    # Window initiaising and formatting
+
+    quiz_gui = ctk.CTk()
+    quiz_gui.title("Career Compass")
+    quiz_gui.geometry("700X600")
+    ctk.set_appearance_mode("dark")
+
+
+    quiz_gui_frame=ctk.CTkFrame(quiz_gui, fg_color=color_palette["frame fg"])
+    quiz_gui_frame.pack(fill="both",expand=True)
+
+    # Quiz functions
+
+    def personality_quiz_window():
+        pass
+    def skills_quiz_window():
+        pass
+    def interests_quiz_window():
+        pass
+
+    # Header
+
+    heading_label=ctk.CTkLabel(quiz_gui_frame, text="Let the compass point to your future",
+                                font=("Helvetica", 40, "bold"), corner_radius=15,
+                                text_color="#230DCE", fg_color="#FFFFFF")
+    heading_label.pack(pady=(20, 10))
+
+    # Each Quiz Frame
+
+    personality_quiz_frame=ctk.CTkFrame(quiz_gui_frame, fg_color=color_palette["Quiz frame fg"])
+    personality_quiz_frame.pack(side="left", fill="both", expand=True, padx=10, pady=40)
+
+    skills_quiz_frame=ctk.CTkFrame(quiz_gui_frame, fg_color=color_palette["Quiz frame fg"])
+    skills_quiz_frame.pack(side="left", fill="both", expand=True, padx=10, pady=40)
+
+    interests_quiz_frame=ctk.CTkFrame(quiz_gui_frame, fg_color=color_palette["Quiz frame fg"])
+    interests_quiz_frame.pack(side="left", fill="both", expand=True, padx=10, pady=40)
+
+    # Quiz headings
+ 
+    # Quiz images
+
+    # Quiz intruction Labels
+
+    #Quiz Buttons
+
+    quiz_gui.mainloop()
 
 intro_window()
