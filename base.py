@@ -3,7 +3,7 @@ import customtkinter as ctk
 from CTkMessagebox import CTkMessagebox  #customtkinter doesnt have a messagebox
 from google import genai
 import mysql.connector as mcon
-
+from PIL import Image
 
 class DB:
     def __init__(self):
@@ -111,6 +111,7 @@ class AI:
 
 # Variables used for formatting
 font_styles={ "labels":("Arial",25),
+             "quiz header":("Arial",50),
              "button 1":("Helvitica",20),
              "button 2":("Helvitica",10),
              "entry box":("Arial",20),
@@ -129,7 +130,7 @@ color_palette={
     "border color":"#9B5DE5",
     "fg color 1":"#151515",
     "fg color 2":"#1A1A1A",
-
+    "quiz button select":"green",
     "clear button hover color":"red"
               }
 border_width=5
@@ -286,23 +287,45 @@ def quiz_window():
 
     # Each Quiz Frame
 
-    personality_quiz_frame=ctk.CTkFrame(quiz_gui_frame, fg_color=color_palette["Quiz frame fg"])
-    personality_quiz_frame.pack(side="left", fill="both", expand=True, padx=10, pady=40)
-
-    skills_quiz_frame=ctk.CTkFrame(quiz_gui_frame, fg_color=color_palette["Quiz frame fg"])
+    skills_quiz_frame=ctk.CTkFrame(quiz_gui_frame, fg_color="#EB8B42")
     skills_quiz_frame.pack(side="left", fill="both", expand=True, padx=10, pady=40)
 
-    interests_quiz_frame=ctk.CTkFrame(quiz_gui_frame, fg_color=color_palette["Quiz frame fg"])
+    personality_quiz_frame=ctk.CTkFrame(quiz_gui_frame, fg_color="#C148E6")
+    personality_quiz_frame.pack(side="left", fill="both", expand=True, padx=10, pady=40)
+
+    interests_quiz_frame=ctk.CTkFrame(quiz_gui_frame, fg_color="#3FC5E6")
     interests_quiz_frame.pack(side="left", fill="both", expand=True, padx=10, pady=40)
 
     # Quiz headings
- 
+    
+    personality_quiz_header=ctk.CTkLabel(personality_quiz_frame, text="Personality Quiz", text_color="pink", font=font_styles["quiz header"])
+    personality_quiz_header.pack(side="top", fill="both", expand=True, padx=10, pady=20)
+
+
     # Quiz images
 
-    # Quiz intruction Labels
+    personality_quiz_image=ctk.CTkImage(dark_image=Image.open('C:/Users/dharu/OneDrive/Desktop/COMP-project/icons for quiz/personality icon.png'), 
+                                        size=(150,150))
+    personality_quiz_image_label=ctk.CTkLabel(personality_quiz_frame, text="", image=personality_quiz_image)
+    personality_quiz_image_label.pack(side="top", fill="both", padx=10, pady=20)
+
+
+    # Quiz instruction Labels
+
+    personality_quiz_instructions=ctk.CTkLabel(personality_quiz_frame, text='''15 situation questions\nwith multiple choice answers that give a grasp\n about your nature'''
+                                               , text_color="pink", font=font_styles["quiz header"])
+    personality_quiz_instructions.pack(side="top", fill="both", expand=True, padx=10, pady=20)
 
     #Quiz Buttons
 
+    personality_quiz_button=ctk.CTkButton(personality_quiz_frame, text="Start Quiz",
+                                          fg_color="#014E14", text_color="pink" , font=font_styles["button 1"], 
+                                          hover_color=color_palette["quiz button select"], width=70)
+    personality_quiz_button.pack(side="top", padx=10, pady=20)
+    
+    
+    
+    
     quiz_gui.mainloop()
 
 intro_window()
