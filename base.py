@@ -111,8 +111,9 @@ class AI:
 
 # Variables used for formatting
 font_styles={ "labels":("Arial",25),
-             "quiz header":("Arial",50),
-             "button 1":("Helvitica",20),
+             "quiz header":("Helvetica", 50, "bold"),
+             "quiz instructions":("Helvetica", 25, "normal"),
+             "button 1": ("Helvetica", 15, "bold"),
              "button 2":("Helvitica",10),
              "entry box":("Arial",20),
              "text box":("Park Avenue", 20, "italic")
@@ -120,19 +121,28 @@ font_styles={ "labels":("Arial",25),
 
 font_sizes={ "labels":25, 
             "significant_button":20,
-            "insignificant button":10}
+            "insignificant button":10
+                }
 
 color_palette={
     "frame fg":"#0D0D0D",
-    "Quiz frame fg": "#211A1A",
     "text color 1":"#EAEAEA",
     "text color 2":"#A0A0A0",
     "border color":"#9B5DE5",
     "fg color 1":"#151515",
     "fg color 2":"#1A1A1A",
     "quiz button select":"green",
-    "clear button hover color":"red"
-              }
+    "clear button hover color":"red",
+
+    "card interests": "#1B2E24",     
+    "card personality": "#2B1B3A",    
+    "card skills": "#1B2D3A",         
+    "btn interests": "#0CB943",       
+    "btn personality": "#C148E6",
+    "btn skills": "#53DFEC"
+    
+    }
+
 border_width=5
 
 def intro_window():
@@ -257,20 +267,17 @@ def intro_window():
 
 
 def quiz_window():
-
-    # Window initiaising and formatting
-
+    # Window initialising and formatting
     quiz_gui = ctk.CTk()
     quiz_gui.title("Career Compass")
-    quiz_gui.geometry("700X600")
+    quiz_gui.geometry("1000x1000") 
     ctk.set_appearance_mode("dark")
 
+    # Main Background Frame
+    quiz_gui_frame = ctk.CTkFrame(quiz_gui, fg_color=color_palette["frame fg"])
+    quiz_gui_frame.pack(fill="both", expand=True)
 
-    quiz_gui_frame=ctk.CTkFrame(quiz_gui, fg_color=color_palette["frame fg"])
-    quiz_gui_frame.pack(fill="both",expand=True)
-
-    # Quiz functions
-
+    # Quiz functions placeholder
     def personality_quiz_window():
         pass
     def skills_quiz_window():
@@ -278,54 +285,149 @@ def quiz_window():
     def interests_quiz_window():
         pass
 
-    # Header
+    # Header 
+    heading_label = ctk.CTkLabel(
+        quiz_gui_frame, 
+        text="Let the compass point to your future",
+        font=("Helvetica", 40, "bold"), 
+        text_color="#FFFFFF"
+    )
+    heading_label.pack(pady=(40, 20))
 
-    heading_label=ctk.CTkLabel(quiz_gui_frame, text="Let the compass point to your future",
-                                font=("Helvetica", 40, "bold"), corner_radius=15,
-                                text_color="#230DCE", fg_color="#FFFFFF")
-    heading_label.pack(pady=(20, 10))
+    # Container for the 3 Quiz Cards 
+    cards_container = ctk.CTkFrame(quiz_gui_frame, fg_color="transparent")
+    cards_container.pack(fill="both", expand=True, padx=30, pady=(10, 40))
 
-    # Each Quiz Frame
+    # INTERESTS QUIZ CARD
+    interests_quiz_frame = ctk.CTkFrame(cards_container, fg_color=color_palette["card interests"], corner_radius=15)
+    interests_quiz_frame.pack(side="left", fill="both", expand=True, padx=15)
 
-    skills_quiz_frame=ctk.CTkFrame(quiz_gui_frame, fg_color="#EB8B42")
-    skills_quiz_frame.pack(side="left", fill="both", expand=True, padx=10, pady=40)
+    interests_quiz_header = ctk.CTkLabel(interests_quiz_frame, text="Interests Quiz", text_color=color_palette["btn interests"], font=font_styles["quiz header"])
+    interests_quiz_header.pack(pady=(25, 10))
 
-    personality_quiz_frame=ctk.CTkFrame(quiz_gui_frame, fg_color="#C148E6")
-    personality_quiz_frame.pack(side="left", fill="both", expand=True, padx=10, pady=40)
+    try:
+        interests_quiz_image = ctk.CTkImage(dark_image=Image.open('C:/Users/dharu/OneDrive/Desktop/COMP-project/icons for quiz/interests quiz icon.png'), size=(100, 100))
+        interests_quiz_image_label = ctk.CTkLabel(interests_quiz_frame, text="", image=interests_quiz_image)
+    except:
+        interests_quiz_image_label = ctk.CTkLabel(interests_quiz_frame, text="[🎨]", font=("Helvetica", 24))
+    interests_quiz_image_label.pack(pady=10)
 
-    interests_quiz_frame=ctk.CTkFrame(quiz_gui_frame, fg_color="#3FC5E6")
-    interests_quiz_frame.pack(side="left", fill="both", expand=True, padx=10, pady=40)
+    interests_quiz_instructions = ctk.CTkLabel(
+        interests_quiz_frame, 
+        text_color="#A0A0A0", 
+        font=font_styles["quiz instructions"],
+        justify="center",
+        text=
+''' What do you live to Do?
 
-    # Quiz headings
-    
-    personality_quiz_header=ctk.CTkLabel(personality_quiz_frame, text="Personality Quiz", text_color="pink", font=font_styles["quiz header"])
-    personality_quiz_header.pack(side="top", fill="both", expand=True, padx=10, pady=20)
+This quick 15-question quiz 
+dives past your current skillset
+to discover your genuine passions.
+
+Click here and Rate the intersts 1 to 5
+to reveal a deeply fulfilling and
+rewarding career path you’ll
+actually love waking up to every day!
+'''
+    )
+    interests_quiz_instructions.pack(pady=15, fill="x")
+
+    interests_quiz_button = ctk.CTkButton(
+        interests_quiz_frame, text="Start Quiz",
+        fg_color=color_palette["btn interests"], text_color="#121212", 
+        font=font_styles["button 1"], hover_color="#0A9636", height=35, corner_radius=8,
+        command=interests_quiz_window
+    )
+    interests_quiz_button.pack(side="bottom", pady=25, padx=20, fill="x")
 
 
-    # Quiz images
+    #  PERSONALITY QUIZ CARD 
+    personality_quiz_frame = ctk.CTkFrame(cards_container, fg_color=color_palette["card personality"], corner_radius=15)
+    personality_quiz_frame.pack(side="left", fill="both", expand=True, padx=15)
 
-    personality_quiz_image=ctk.CTkImage(dark_image=Image.open('C:/Users/dharu/OneDrive/Desktop/COMP-project/icons for quiz/personality icon.png'), 
-                                        size=(150,150))
-    personality_quiz_image_label=ctk.CTkLabel(personality_quiz_frame, text="", image=personality_quiz_image)
-    personality_quiz_image_label.pack(side="top", fill="both", padx=10, pady=20)
+    personality_quiz_header = ctk.CTkLabel(personality_quiz_frame, text="Personality Quiz", text_color=color_palette["btn personality"], font=font_styles["quiz header"])
+    personality_quiz_header.pack(pady=(25, 10))
+
+    extra_note=ctk.CTkLabel(personality_quiz_frame,text="(RECOMMENDED)", text_color="#F50D0D", font=("Arial",15))
+    extra_note.pack()
+
+    try:
+        personality_quiz_image = ctk.CTkImage(dark_image=Image.open('C:/Users/dharu/OneDrive/Desktop/COMP-project/icons for quiz/personality icon.png'), size=(100, 100))
+        personality_quiz_image_label = ctk.CTkLabel(personality_quiz_frame, text="", image=personality_quiz_image)
+    except:
+        personality_quiz_image_label = ctk.CTkLabel(personality_quiz_frame, text="[🧠]", font=("Helvetica", 24))
+    personality_quiz_image_label.pack(pady=10)
+
+    personality_quiz_instructions = ctk.CTkLabel(
+        personality_quiz_frame,  
+        text_color="#A0A0A0", 
+        font=font_styles["quiz instructions"],
+        justify="center",
+        text=
+'''Discover how your unique 
+nature shapes your future!
+
+15-question quiz that uses
+real-world scenarios to analyze
+your natural instincts, decision
+making style, and social traits.
+           
+Click here to find the ideal workplace
+environments and careers for you.''',
+    )
+    personality_quiz_instructions.pack(pady=15, fill="x")
+
+    personality_quiz_button = ctk.CTkButton(
+        personality_quiz_frame, text="Start Quiz",
+        fg_color=color_palette["btn personality"], text_color="#121212", 
+        font=font_styles["button 1"], hover_color="#A037C0", height=35, corner_radius=8,
+        command=personality_quiz_window
+    )
+    personality_quiz_button.pack(side="bottom", pady=25, padx=20, fill="x")
 
 
-    # Quiz instruction Labels
+    #  SKILLS QUIZ CARD 
+    skills_quiz_frame = ctk.CTkFrame(cards_container, fg_color=color_palette["card skills"], corner_radius=15)
+    skills_quiz_frame.pack(side="left", fill="both", expand=True, padx=15)
 
-    personality_quiz_instructions=ctk.CTkLabel(personality_quiz_frame, text='''15 situation questions\nwith multiple choice answers that give a grasp\n about your nature'''
-                                               , text_color="pink", font=font_styles["quiz header"])
-    personality_quiz_instructions.pack(side="top", fill="both", expand=True, padx=10, pady=20)
+    skills_quiz_header = ctk.CTkLabel(skills_quiz_frame, text="Skills Quiz", text_color=color_palette["btn skills"], font=font_styles["quiz header"])
+    skills_quiz_header.pack(pady=(25, 10))
 
-    #Quiz Buttons
+    try:
+        skills_quiz_image = ctk.CTkImage(dark_image=Image.open('C:/Users/dharu/OneDrive/Desktop/COMP-project/icons for quiz/skills quiz icon.png'), size=(100, 100))
+        skills_quiz_image_label = ctk.CTkLabel(skills_quiz_frame, text="", image=skills_quiz_image)
+    except:
+        skills_quiz_image_label = ctk.CTkLabel(skills_quiz_frame, text="[🛠️]", font=("Helvetica", 24))
+    skills_quiz_image_label.pack(pady=10)
 
-    personality_quiz_button=ctk.CTkButton(personality_quiz_frame, text="Start Quiz",
-                                          fg_color="#014E14", text_color="pink" , font=font_styles["button 1"], 
-                                          hover_color=color_palette["quiz button select"], width=70)
-    personality_quiz_button.pack(side="top", padx=10, pady=20)
-    
-    
-    
-    
+    skills_quiz_instructions = ctk.CTkLabel(
+        skills_quiz_frame, 
+        text_color="#A0A0A0", 
+        font=font_styles["quiz instructions"],
+        justify="center",
+        text=
+'''
+Ready to find a career 
+you will excel in?
+
+15-question quiz to evaluate
+your core strengths from technical 
+logic to unmatched creation.
+
+Click here and Simply rate your 
+confidence in various skills
+from 1 to 5 to find out.''', 
+    )
+    skills_quiz_instructions.pack(pady=15, fill="x")
+
+    skills_quiz_button = ctk.CTkButton(
+        skills_quiz_frame, text="Start Quiz",
+        fg_color=color_palette["btn skills"], text_color="#121212", 
+        font=font_styles["button 1"], hover_color="#3CBCC8", height=35, corner_radius=8,
+        command=skills_quiz_window
+    )
+    skills_quiz_button.pack(side="bottom", pady=25, padx=20, fill="x")
+
     quiz_gui.mainloop()
 
-intro_window()
+quiz_window()
