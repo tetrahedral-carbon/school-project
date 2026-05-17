@@ -164,7 +164,16 @@ def intro_window():
             usernames_with_previews[username] = preview_text        #links username to preview
             intro_gui.destroy()                                     #destroys the window
             ###quiz_gui()                                           #calls next window
-
+    def check_username():
+        check_name_input=ctk.CTkInputDialog(title="check Username",text="Enter your registered username") 
+        check_name=check_name_input.get_input()
+        if not check_name:
+                CTkMessagebox(title="Error", message="Invalid username", icon="cancel")    #makes sure empty usernames are rejected
+        elif check_name not in usernames_with_previews:
+            CTkMessagebox(title="Error", message="Username not found!", icon="warning")
+        else:
+            pass #choice window
+        
     # UI Components 
     
 
@@ -205,6 +214,15 @@ def intro_window():
                               fg_color=color_palette["fg color 2"], text_color=color_palette["text color 2"])
     name_entry.grid(row=1, column=4, pady=(5, 10), padx=(0, 10))
 
+    ctk.CTkLabel(input_frame, text="User Already registered? click here", 
+                 font=("Arial",15), corner_radius=15, 
+                 text_color=color_palette["text color 1"], fg_color=color_palette["fg color 1"]).grid(row=2, column=4, sticky="w")
+    
+    check_button = ctk.CTkButton(input_frame, text="Enter", 
+                               width=80, height=15,
+                               fg_color="#2fa572", hover_color="#106a43",
+                               command=check_username)
+    check_button.grid(row=2, column=5, sticky="w")
 
     btn_clear_name = ctk.CTkButton(input_frame, text="Clear", width=80, 
                                    fg_color=color_palette["fg color 1"],hover_color=color_palette["button hover color"],
@@ -216,19 +234,19 @@ def intro_window():
     # Career Preview Section
     ctk.CTkLabel(input_frame, text="Career Preview (Optional)", 
                  font=font_styles["labels"]
-                 , text_color=color_palette["text color 1"]).grid(row=2, column=4, sticky="w")
+                 , text_color=color_palette["text color 1"]).grid(row=3, column=4, sticky="w")
     
     preview_textbox = ctk.CTkTextbox(input_frame, height=100,  font=font_styles["text box"],
                                      text_color=color_palette["text color 2"], fg_color=color_palette["fg color 1"], 
                                      border_color=color_palette["border color"],border_width=3)
-    preview_textbox.grid(row=3, column=4, columnspan=2, pady=(5, 10), sticky="nsew")
+    preview_textbox.grid(row=4, column=4, columnspan=2, pady=(5, 10), sticky="nsew")
 
 
     btn_clear_preview = ctk.CTkButton(input_frame, text="Clear Preview", width=100,
                                       fg_color=color_palette["fg color 1"], hover_color=color_palette["button hover color"],
                                         border_width=1,
                                       command=lambda:preview_textbox.delete("1.0", "end"))
-    btn_clear_preview.grid(row=4, column=4, sticky="w")
+    btn_clear_preview.grid(row=5, column=4, sticky="w")
 
     # Action Buttons 
 
