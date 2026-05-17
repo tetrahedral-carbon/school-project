@@ -1,8 +1,10 @@
+CREATE DATABASE  IF NOT EXISTS `mydb` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `mydb`;
 -- MySQL dump 10.13  Distrib 8.0.45, for Win64 (x86_64)
 --
--- Host: database-1.c09cucuk2ssf.us-east-1.rds.amazonaws.com    Database: mydb
+-- Host: localhost    Database: mydb
 -- ------------------------------------------------------
--- Server version	8.4.8
+-- Server version	8.0.45
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -14,14 +16,6 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-SET @MYSQLDUMP_TEMP_LOG_BIN = @@SESSION.SQL_LOG_BIN;
-SET @@SESSION.SQL_LOG_BIN= 0;
-
---
--- GTID state at the beginning of the backup 
---
-
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '';
 
 --
 -- Table structure for table `answers`
@@ -32,7 +26,7 @@ DROP TABLE IF EXISTS `answers`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `answers` (
   `s_no` smallint NOT NULL AUTO_INCREMENT,
-  `user_name` varchar(50) DEFAULT NULL,
+  `username` varchar(50) DEFAULT NULL,
   `user_guess` varchar(50) DEFAULT NULL,
   `q1` enum('1','2','3','4','5') DEFAULT NULL,
   `q2` enum('1','2','3','4','5') DEFAULT NULL,
@@ -94,6 +88,9 @@ CREATE TABLE `answers` (
   `q58` enum('1','2','3','4','5') DEFAULT NULL,
   `q59` enum('1','2','3','4','5') DEFAULT NULL,
   `q60` enum('1','2','3','4','5') DEFAULT NULL,
+  `career1` varchar(50) DEFAULT NULL,
+  `career2` varchar(50) DEFAULT NULL,
+  `career3` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`s_no`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -160,28 +157,6 @@ INSERT INTO `personality_questions` VALUES (1,'If you had access to a time machi
 UNLOCK TABLES;
 
 --
--- Table structure for table `sample`
---
-
-DROP TABLE IF EXISTS `sample`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `sample` (
-  `s_no` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `sample`
---
-
-LOCK TABLES `sample` WRITE;
-/*!40000 ALTER TABLE `sample` DISABLE KEYS */;
-INSERT INTO `sample` VALUES (1),(2),(34);
-/*!40000 ALTER TABLE `sample` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `skills_questions`
 --
 
@@ -204,7 +179,6 @@ LOCK TABLES `skills_questions` WRITE;
 INSERT INTO `skills_questions` VALUES (1,'I am good at solving mathematical problems'),(2,'I can clearly explain ideas to others'),(3,'I am skilled at writing (essays, reports, stories)'),(4,'I can analyze complex information effectively'),(5,'I am good at using technology and digital tools'),(6,'I can manage my time effectively'),(7,'I am skilled at negotiating or persuading others'),(8,'I can work well under tight deadlines'),(9,'I am good at designing or creating visual content'),(10,'I can learn new skills quickly'),(11,'I am good at troubleshooting problems'),(12,'I can work effectively in a team'),(13,'I am skilled in research and gathering information'),(14,'I can handle multiple tasks at once'),(15,'I am good at making decisions based on data'),(16,'I can teach or mentor others effectively'),(17,'I am good at organising information systematically'),(18,'I can think critically and question assumptions'),(19,'I am skilled in hands-on or practical work'),(20,'I can stay focused for long periods');
 /*!40000 ALTER TABLE `skills_questions` ENABLE KEYS */;
 UNLOCK TABLES;
-SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -215,4 +189,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-02 22:35:25
+-- Dump completed on 2026-05-17 19:58:10
