@@ -57,15 +57,15 @@ class DB:
         return (qp_list, qp_options)
     
     
-    # stores user info and answers (in the form of string) in database
+    # stores user info, answers and carer options (in the form of string) in database
     def store_ans(self, data_list):
         mycursor = self.db.cursor()
-        # data_list should contain 62 elements, 1 name, 1 guessed career and 60 answers
+        # data_list should contain 65 elements, 1 username, 1 guessed career, 60 answers and 3 career options
         
         # placeholders and columns generator
-        placeholders = ", ".join(["%s"] * 62)
+        placeholders = ", ".join(["%s"] * 65)
         q_columns = ", ".join([f"q{i}" for i in range(1, 61)])
-        columns = "user_name, user_guess" + q_columns
+        columns = "username, user_guess" + q_columns + "career1, career2, career3"
 
         sql_query = f"INSERT INTO answers ({columns}) VALUES ({placeholders})"
         mycursor.execute(sql_query, data_list)
@@ -93,7 +93,7 @@ class AI:
     
 
 #sample usage of AI class
-#my_object = AI({"initial": "this dictionary contains a set of questions and answers on a scale of 1 to 5 (1-strongly disagree, 5-strongly agree). recommend me 3 suitable career options", 
+#my_object = AI({"initial": "this dictionary contains a set of questions and answers on a scale of 1 to 5 (1-strongly disagree, 5-strongly agree). recommend me 3 suitable career options. at the end give me a string of the 3 options in python syntax", 
 #                 "i am very honest": 5, 
 #                 "i like cars": 2, 
 #                 "i am very social": 3})
