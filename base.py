@@ -13,9 +13,6 @@ class DB:
             host = "localhost",
             user = "root",
             passwd = "ilikemysql",
-            host = "localhost",
-            user = "root",
-            passwd = "ilikemysql",
             database = "mydb"
         )
 
