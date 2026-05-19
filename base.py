@@ -13,9 +13,6 @@ class DB:
             host = "localhost",
             user = "root",
             passwd = "ilikemysql",
-            host = "localhost",
-            user = "root",
-            passwd = "ilikemysql",
             database = "mydb"
         )
 
@@ -131,8 +128,8 @@ font_sizes={ "labels":25,
             "significant_button":20,
             "insignificant button":10
                 }
-            "insignificant button":10
-                }
+
+                
 
 color_palette={
     "frame fg":"#0D0D0D",
@@ -149,9 +146,8 @@ color_palette={
     "card skills": "#1B2D3A",         
     "btn interests": "#0CB943",       
     "btn personality": "#C148E6",
-    "btn skills": "#53DFEC"
+    "btn skills": "#53DFEC",
     
-    }
 
     "quiz button select":"green",
     "clear button hover color":"red",
@@ -260,7 +256,6 @@ def intro_window():
 
     btn_clear_name = ctk.CTkButton(input_frame, text="Clear", width=80, 
                                    fg_color=color_palette["fg color 1"],hover_color=color_palette["clear button hover color"],
-                                   fg_color=color_palette["fg color 1"],hover_color=color_palette["clear button hover color"],
                                    text_color=color_palette["text color 1"], border_width=1,
                                    command=lambda:name_entry.delete(0, "end"))
     btn_clear_name.grid(row=1, column=5, pady=(5, 10))
@@ -287,7 +282,6 @@ def intro_window():
 
 
     btn_clear_preview = ctk.CTkButton(input_frame, text="Clear Preview", width=100,
-                                      fg_color=color_palette["fg color 1"], hover_color=color_palette["clear button hover color"],
                                       fg_color=color_palette["fg color 1"], hover_color=color_palette["clear button hover color"],
                                         border_width=1,
                                       command=lambda:preview_textbox.delete("1.0", "end"))
