@@ -4,11 +4,15 @@ from CTkMessagebox import CTkMessagebox  #customtkinter doesnt have a messagebox
 from google import genai
 import mysql.connector as mcon
 from PIL import Image
+from PIL import Image
 
 class DB:
     def __init__(self):
         # info about host, user, database
         self.db = mcon.connect(
+            host = "localhost",
+            user = "root",
+            passwd = "ilikemysql",
             host = "localhost",
             user = "root",
             passwd = "ilikemysql",
@@ -57,18 +61,19 @@ class DB:
         return (qp_list, qp_options)
     
     
-    # stores user info and answers (in the form of string) in database
+    # stores user info, answers and carer options (in the form of string) in database
     def store_ans(self, data_list):
         mycursor = self.db.cursor()
-        # data_list should contain 62 elements, 1 name, 1 guessed career and 60 answers
+        # data_list should contain 65 elements, 1 username, 1 guessed career, 60 answers and 3 career options
         
         # placeholders and columns generator
-        placeholders = ", ".join(["%s"] * 62)
+        placeholders = ", ".join(["%s"] * 65)
         q_columns = ", ".join([f"q{i}" for i in range(1, 61)])
-        columns = "user_name, user_guess" + q_columns
+        columns = "username, user_guess" + q_columns + "career1, career2, career3"
 
         sql_query = f"INSERT INTO answers ({columns}) VALUES ({placeholders})"
         mycursor.execute(sql_query, data_list)
+        self.db.commit()
         self.db.commit()
 
 
@@ -93,7 +98,7 @@ class AI:
     
 
 #sample usage of AI class
-#my_object = AI({"initial": "this dictionary contains a set of questions and answers on a scale of 1 to 5 (1-strongly disagree, 5-strongly agree). recommend me 3 suitable career options", 
+#my_object = AI({"initial": "this dictionary contains a set of questions and answers on a scale of 1 to 5 (1-strongly disagree, 5-strongly agree). recommend me 3 suitable career options. at the end give me a string of the 3 options in python syntax", 
 #                 "i am very honest": 5, 
 #                 "i like cars": 2, 
 #                 "i am very social": 3})
@@ -114,6 +119,9 @@ font_styles={ "labels":("Arial",25),
              "quiz header":("Helvetica", 50, "bold"),
              "quiz instructions":("Helvetica", 25, "normal"),
              "button 1": ("Helvetica", 15, "bold"),
+             "quiz header":("Helvetica", 50, "bold"),
+             "quiz instructions":("Helvetica", 25, "normal"),
+             "button 1": ("Helvetica", 15, "bold"),
              "button 2":("Helvitica",10),
              "entry box":("Arial",20),
              "text box":("Park Avenue", 20, "italic")
@@ -121,6 +129,8 @@ font_styles={ "labels":("Arial",25),
 
 font_sizes={ "labels":25, 
             "significant_button":20,
+            "insignificant button":10
+                }
             "insignificant button":10
                 }
 
@@ -143,6 +153,18 @@ color_palette={
     
     }
 
+    "quiz button select":"green",
+    "clear button hover color":"red",
+
+    "card interests": "#1B2E24",     
+    "card personality": "#2B1B3A",    
+    "card skills": "#1B2D3A",         
+    "btn interests": "#0CB943",       
+    "btn personality": "#C148E6",
+    "btn skills": "#53DFEC"
+    
+    }
+
 border_width=5
 
 def intro_window():
@@ -150,6 +172,7 @@ def intro_window():
     # window Initialisation and Formatting
 
     intro_gui = ctk.CTk()
+    intro_gui.title("Career Compass")
     intro_gui.title("Career Compass")
     intro_gui.geometry("700X600")
     ctk.set_appearance_mode("dark")
@@ -237,6 +260,7 @@ def intro_window():
 
     btn_clear_name = ctk.CTkButton(input_frame, text="Clear", width=80, 
                                    fg_color=color_palette["fg color 1"],hover_color=color_palette["clear button hover color"],
+                                   fg_color=color_palette["fg color 1"],hover_color=color_palette["clear button hover color"],
                                    text_color=color_palette["text color 1"], border_width=1,
                                    command=lambda:name_entry.delete(0, "end"))
     btn_clear_name.grid(row=1, column=5, pady=(5, 10))
@@ -263,6 +287,7 @@ def intro_window():
 
 
     btn_clear_preview = ctk.CTkButton(input_frame, text="Clear Preview", width=100,
+                                      fg_color=color_palette["fg color 1"], hover_color=color_palette["clear button hover color"],
                                       fg_color=color_palette["fg color 1"], hover_color=color_palette["clear button hover color"],
                                         border_width=1,
                                       command=lambda:preview_textbox.delete("1.0", "end"))
