@@ -395,7 +395,7 @@ def quiz_window():
         text=
 ''' What do you live to Do?
 
-This quick 15-question quiz 
+This quick 20-question quiz 
 dives past your current skillset
 to discover your genuine passions.
 
@@ -443,7 +443,7 @@ actually love waking up to every day!
 '''Discover how your unique 
 nature shapes your future!
 
-15-question quiz that uses
+20-question quiz that uses
 real-world scenarios to analyze
 your natural instincts, decision
 making style, and social traits.
@@ -486,7 +486,7 @@ environments and careers for you.''',
 Ready to find a career 
 you will excel in?
 
-15-question quiz to evaluate
+20-question quiz to evaluate
 your core strengths from technical 
 logic to unmatched creation.
 
