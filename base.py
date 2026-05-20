@@ -6,13 +6,15 @@ import mysql.connector as mcon
 from PIL import Image
 from PIL import Image
 
+
+
 class DB:
     def __init__(self):
         # info about host, user, database
         self.db = mcon.connect(
             host = "localhost",
             user = "root",
-            passwd = "ilikemysql",
+            passwd = "dharun123",
             database = "mydb"
         )
 
@@ -102,7 +104,6 @@ class AI:
 #my_object.give_ai_data()
 #answer = my_object.pass_result()
 #print(answer)
-
 
 
 ''' USER INTERFACE PART OF THE PROGRAM '''
@@ -326,7 +327,10 @@ def quiz_window():
     def skills_quiz():
         pass
     def interests_quiz():
+
+        
         ###check if user already gave quiz
+        
         quiz_gui.withdraw()
 
         interests_gui=ctk.CTk()
@@ -337,28 +341,43 @@ def quiz_window():
         interests_gui_frame = ctk.CTkScrollableFrame(interests_gui, fg_color=color_palette["frame fg"])
         interests_gui_frame.pack(fill="both", expand=True)
 
-        
+        def on_close_shortcut():
+            interests_gui.destroy()
+            quiz_gui.deiconify() # Bring back original window
+
+        interests_gui.protocol("WM_DELETE_WINDOW", on_close_shortcut)
+
+
         # Variables needed
 
         question_holder=ctk.StringVar()
-        radio_variable=ctk.IntVar()
         linking_list=[]
         linking_list=[ctk.IntVar(value=-1) for e in range(20)]
         questions_and_answers={}
-        questions = ["placeholder question"+str(i) for i in range(1,21)] ##selects questions from db
+        total_questions=DB()
+        questions=total_questions.get_q()
+        
+        #instructions label
+        
+        intructions=ctk.CTkLabel(interests_gui_frame,
+                                  text="to be updated",font=font_styles["labels"])
+        intructions.grid(row=0, sticky="w")
+        
+        
         # packing each question and button 
 
         for q in range(20):
-            question_label=ctk.CTkLabel(interests_gui_frame, text=questions[q], font=font_styles["labels"])
+            question_label=ctk.CTkLabel(interests_gui_frame, text=str(q+1)+"). "+questions[q+20], font=font_styles["labels"])
             question_label.grid(row=q+2, column=0, pady=(20, 5), sticky="w")
             for button_value in range(1,6):
                 radio_button=ctk.CTkRadioButton(interests_gui_frame, text=str(button_value), variable=linking_list[q], value=button_value)
-                radio_button.grid(row=q+2, columnspan=1, column=button_value+2, sticky="w")
+                radio_button.grid(row=q+2, columnspan=1, column=button_value+2, sticky="w", pady=(20, 5))
 
         ###submit functions to store answers to be created
 
 
         interests_gui.mainloop()
+
 
     # Header 
     heading_label = ctk.CTkLabel(
