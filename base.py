@@ -14,7 +14,7 @@ class DB:
         self.db = mcon.connect(
             host = "localhost",
             user = "root",
-            passwd = "dharun123",
+            passwd = "ilikemysql",
             database = "mydb"
         )
 
@@ -159,14 +159,14 @@ color_palette={
     "btn personality": "#C148E6",
     "btn skills": "#53DFEC",
     #interest quiz
-    "heading 1":"dark green",
-    "question 1":"green",
+    "heading 1":"#00FF48",
+    "question 1":"#65F775",
     "button hover 1":"green",
     "selected button color 1":"green",
     "button color 1":"light green",
     #skills quiz
-    "heading 2":"royal blue",
-    "question 2":"blue",
+    "heading 2":"#3590E5",
+    "question 2":"#65E4F7",
     "button hover 2":"cyan",
     "selected button color 2":"blue",
     "button color 2":"cyan"
@@ -385,7 +385,7 @@ def quiz_window():
         #  Instructions (row 0) 
         instructions = ctk.CTkLabel(
             skills_gui_frame,
-            text="answer each question by rating from 1 (Strongly Disagree) to 5 (Strongly Agree).",
+            text="Answer each question by rating from 1 (Strongly Disagree) to 5 (Strongly Agree).",
             font=font_styles["labels"],
             text_color=color_palette["heading 2"]
         )
@@ -488,7 +488,7 @@ def quiz_window():
         #  Instructions (row 0) 
         instructions = ctk.CTkLabel(
             interests_gui_frame,
-            text="answer each question by rating from 1 (Strongly Disagree) to 5 (Strongly Agree).",
+            text="Answer each question by rating from 1 (Strongly Disagree) to 5 (Strongly Agree).",
             font=font_styles["labels"],
             text_color=color_palette["heading 1"]
         )
