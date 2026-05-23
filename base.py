@@ -113,7 +113,8 @@ class AI:
 
 
 # Variables used for formatting
-font_styles={ "labels":("Arial",25),
+font_styles={
+            "labels":("Arial",25),
              "quiz header":("Helvetica", 50, "bold"),
              "quiz instructions":("Helvetica", 25, "normal"),
              "button 1": ("Helvetica", 15, "bold"),
@@ -134,6 +135,7 @@ font_sizes={ "labels":25,
 
 color_palette={
     "frame fg":"#0D0D0D",
+    # intro window
     "text color 1":"#EAEAEA",
     "text color 2":"#A0A0A0",
     "border color":"#9B5DE5",
@@ -141,25 +143,33 @@ color_palette={
     "fg color 2":"#1A1A1A",
     "quiz button select":"green",
     "clear button hover color":"red",
-
+    # quiz window
     "card interests": "#1B2E24",     
     "card personality": "#2B1B3A",    
     "card skills": "#1B2D3A",         
     "btn interests": "#0CB943",       
     "btn personality": "#C148E6",
     "btn skills": "#53DFEC",
-    
-
     "quiz button select":"green",
     "clear button hover color":"red",
-
     "card interests": "#1B2E24",     
     "card personality": "#2B1B3A",    
     "card skills": "#1B2D3A",         
     "btn interests": "#0CB943",       
     "btn personality": "#C148E6",
-    "btn skills": "#53DFEC"
-    
+    "btn skills": "#53DFEC",
+    #interest quiz
+    "heading 1":"dark green",
+    "question 1":"green",
+    "button hover 1":"green",
+    "selected button color 1":"green",
+    "button color 1":"light green",
+    #skills quiz
+    "heading 2":"royal blue",
+    "question 2":"blue",
+    "button hover 2":"cyan",
+    "selected button color 2":"blue",
+    "button color 2":"cyan"
     }
 
 border_width=5
@@ -325,15 +335,112 @@ def quiz_window():
     def personality_quiz():
         pass
     def skills_quiz():
-        pass
+        quiz_gui.withdraw() # keeps the quiz window hidden
+
+        skills_gui = ctk.CTk()
+        skills_gui.title("Career Compass")
+        skills_gui.geometry("700x600")
+        ctk.set_appearance_mode("dark")
+
+        skills_gui_frame = ctk.CTkScrollableFrame(skills_gui, fg_color=color_palette["frame fg"])
+        skills_gui_frame.pack(fill="both", expand=True)
+
+        # coloumn weights
+        skills_gui_frame.columnconfigure(0, weight=2, minsize=500)   #for questions 
+        for col in range(1, 7):          
+            skills_gui_frame.columnconfigure(col, weight=1)          #for buttons
+
+        def on_close_shortcut():        # function to close the program and return
+            skills_gui.destroy()
+            quiz_gui.deiconify()
+
+        skills_gui.protocol("WM_DELETE_WINDOW", on_close_shortcut)
+
+        #button list and question access
+        linking_list = [ctk.IntVar(value=-1) for _ in range(20)]    #creates 20 variables for buttons
+        total_questions = DB()
+        questions = total_questions.get_q()
+
+
+        def submit_answers():
+            # Check if question has been answered
+            unanswered=[]
+            for i, var in enumerate(linking_list): #enumerate gives index and variable at a time 
+                if var.get() ==-1: #not answered
+                    unanswered.append("Q"+str(i+1)) #notes the Q no
+            if unanswered:      #checks if list is empty
+                CTkMessagebox(title="Question(s) unanswered", message="Please answer the question(s)"+str(unanswered).strip("[]") , icon="warning")
+                return #function exit
+
+            # question and answer dictionary
+            questions_and_answers = {
+                questions[i + 20]: linking_list[i].get()
+                for i in range(20)
+            }
+        ###store answers in db
+
+            skills_gui.destroy()
+            
+
+        #  Instructions (row 0) 
+        instructions = ctk.CTkLabel(
+            skills_gui_frame,
+            text="answer each question by rating from 1 (Strongly Disagree) to 5 (Strongly Agree).",
+            font=font_styles["labels"],
+            text_color=color_palette["heading 2"]
+        )
+        instructions.grid(row=0, column=0, columnspan=7, padx=10, pady=(10, 0), sticky="w")
+
+        # Column headers for 1-5 (row 1)
+        for val in range(1, 6):
+            header = ctk.CTkLabel(skills_gui_frame, text=str(val), font=font_styles["labels"], text_color=color_palette["heading 2"])
+            header.grid(row=1, column=val, padx=(5,110), pady=(6, 0), sticky="n")
+
+        # Questions + radio buttons (rows 2-21) 
+        for q in range(20):
+            question_label = ctk.CTkLabel(
+                skills_gui_frame,
+                text= "Q"+str(q+1)+")  "+questions[q], #accesses questions from index 0
+                font=font_styles["labels"],
+                justify="left",
+                anchor="w",
+                text_color=color_palette["question 2"]
+            )
+            question_label.grid(row=q + 2, column=0, padx=(5, 5), pady=(12, 4), sticky="w")
+
+            for button_value in range(1, 6):
+                radio_button = ctk.CTkRadioButton(
+                    skills_gui_frame,
+                    text="",                          # header already created
+                    variable=linking_list[q],
+                    value=button_value,
+                    width=30,
+                    hover_color=color_palette["button hover 2"],
+                    fg_color=color_palette["selected button color 2"],
+                    border_color=color_palette["button color 2"]
+                )
+                radio_button.grid(row=q + 2, column=button_value, padx=(5,100), pady=(6, 4), sticky="n")
+
+
+        # Submit button (row 22)
+        submit_btn = ctk.CTkButton(
+            skills_gui_frame,
+            text="Submit",
+            width=200,
+            height=40,
+            fg_color="#2fa572",
+            hover_color="#106a43",
+            command=submit_answers,
+        )
+        submit_btn.grid(row=23, column=0, columnspan=7, pady=(10, 15))
+
+        skills_gui.mainloop()
+
     def interests_quiz():
 
-        
-        ###check if user already gave quiz
-        
-        quiz_gui.withdraw()
+        quiz_gui.withdraw() # keeps the quiz window hidden
 
-        interests_gui=ctk.CTk()
+        interests_gui = ctk.CTk()
         interests_gui.title("Career Compass")
         interests_gui.geometry("700x600")
         ctk.set_appearance_mode("dark")
@@ -341,40 +448,94 @@ def quiz_window():
         interests_gui_frame = ctk.CTkScrollableFrame(interests_gui, fg_color=color_palette["frame fg"])
         interests_gui_frame.pack(fill="both", expand=True)
 
-        def on_close_shortcut():
+        # coloumn weights
+        interests_gui_frame.columnconfigure(0, weight=2, minsize=500)   #for questions 
+        for col in range(1, 7):          
+            interests_gui_frame.columnconfigure(col, weight=1)          #for buttons
+
+        def on_close_shortcut():        # function to close the program and return
             interests_gui.destroy()
-            quiz_gui.deiconify() # Bring back original window
+            quiz_gui.deiconify()
 
         interests_gui.protocol("WM_DELETE_WINDOW", on_close_shortcut)
 
+        #button list and question access
+        linking_list = [ctk.IntVar(value=-1) for _ in range(20)]    #creates 20 variables for buttons
+        total_questions = DB()
+        questions = total_questions.get_q()
 
-        # Variables needed
 
-        question_holder=ctk.StringVar()
-        linking_list=[]
-        linking_list=[ctk.IntVar(value=-1) for e in range(20)]
-        questions_and_answers={}
-        total_questions=DB()
-        questions=total_questions.get_q()
-        
-        #instructions label
-        
-        intructions=ctk.CTkLabel(interests_gui_frame,
-                                  text="to be updated",font=font_styles["labels"])
-        intructions.grid(row=0, sticky="w")
-        
-        
-        # packing each question and button 
+        def submit_answers():
+            # Check if question has been answered
+            unanswered=[]
+            for i, var in enumerate(linking_list): #enumerate gives index and variable at a time 
+                if var.get() ==-1: #not answered
+                    unanswered.append("Q"+str(i+1)) #notes the Q no
+            if unanswered:      #checks if list is empty
+                CTkMessagebox(title="Question(s) unanswered", message="Please answer the question(s)"+str(unanswered).strip("[]") , icon="warning")
+                return #function exit
 
+            # question and answer dictionary
+            questions_and_answers = {
+                questions[i + 20]: linking_list[i].get()
+                for i in range(20)
+            }
+        ###store answers in db
+
+            interests_gui.destroy()
+            
+
+        #  Instructions (row 0) 
+        instructions = ctk.CTkLabel(
+            interests_gui_frame,
+            text="answer each question by rating from 1 (Strongly Disagree) to 5 (Strongly Agree).",
+            font=font_styles["labels"],
+            text_color=color_palette["heading 1"]
+        )
+        instructions.grid(row=0, column=0, columnspan=7, padx=10, pady=(10, 0), sticky="w")
+
+        # Column headers for 1-5 (row 1)
+        for val in range(1, 6):
+            header = ctk.CTkLabel(interests_gui_frame, text=str(val), font=font_styles["labels"], text_color=color_palette["heading 1"])
+            header.grid(row=1, column=val, padx=(5,110), pady=(6, 0), sticky="n")
+
+        # Questions + radio buttons (rows 2-21) 
         for q in range(20):
-            question_label=ctk.CTkLabel(interests_gui_frame, text=str(q+1)+"). "+questions[q+20], font=font_styles["labels"])
-            question_label.grid(row=q+2, column=0, pady=(20, 5), sticky="w")
-            for button_value in range(1,6):
-                radio_button=ctk.CTkRadioButton(interests_gui_frame, text=str(button_value), variable=linking_list[q], value=button_value)
-                radio_button.grid(row=q+2, columnspan=1, column=button_value+2, sticky="w", pady=(20, 5))
+            question_label = ctk.CTkLabel(
+                interests_gui_frame,
+                text= "Q"+str(q+1)+")  "+questions[q+20], #accesses questions from index 21
+                font=font_styles["labels"],
+                justify="left",
+                anchor="w",
+                text_color=color_palette["question 1"]
+            )
+            question_label.grid(row=q + 2, column=0, padx=(5, 5), pady=(12, 4), sticky="w")
 
-        ###submit functions to store answers to be created
+            for button_value in range(1, 6):
+                radio_button = ctk.CTkRadioButton(
+                    interests_gui_frame,
+                    text="",                          # header already created
+                    variable=linking_list[q],
+                    value=button_value,
+                    width=30,
+                    hover_color=color_palette["button hover 1"],
+                    fg_color=color_palette["selected button color 1"],
+                    border_color=color_palette["button color 1"]
+                )
+                radio_button.grid(row=q + 2, column=button_value, padx=(5,100), pady=(6, 4), sticky="n")
 
+
+        # Submit button (row 22)
+        submit_btn = ctk.CTkButton(
+            interests_gui_frame,
+            text="Submit",
+            width=200,
+            height=40,
+            fg_color="#2fa572",
+            hover_color="#106a43",
+            command=submit_answers,
+        )
+        submit_btn.grid(row=23, column=0, columnspan=7, pady=(10, 15))
 
         interests_gui.mainloop()
 
