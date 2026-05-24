@@ -415,7 +415,7 @@ def quiz_window():
         instructions = ctk.CTkLabel(
             skills_gui_frame,
             text="Answer each question by rating from 1 (Strongly Disagree) to 5 (Strongly Agree).",
-            font=font_styles["labels"],
+            font=font_styles["instructions"],
             text_color=color_palette["heading 2"]
         )
         instructions.grid(row=0, column=0, columnspan=7, padx=10, pady=(10, 0), sticky="w")
@@ -521,7 +521,7 @@ def quiz_window():
         instructions = ctk.CTkLabel(
             interests_gui_frame,
             text="Answer each question by rating from 1 (Strongly Disagree) to 5 (Strongly Agree).",
-            font=font_styles["labels"],
+            font=font_styles["instructions"],
             text_color=color_palette["heading 1"]
         )
         instructions.grid(row=0, column=0, columnspan=7, padx=10, pady=(10, 0), sticky="w")
