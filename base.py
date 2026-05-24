@@ -114,70 +114,88 @@ class AI:
 
 # Variables used for formatting
 font_styles={
-            "labels":("Arial",25),
-             "quiz header":("Helvetica", 50, "bold"),
-             "quiz instructions":("Helvetica", 25, "normal"),
-             "button 1": ("Helvetica", 15, "bold"),
-             "quiz header":("Helvetica", 50, "bold"),
-             "quiz instructions":("Helvetica", 25, "normal"),
-             "button 1": ("Helvetica", 15, "bold"),
-             "button 2":("Helvitica",10),
-             "entry box":("Arial",20),
-             "text box":("Park Avenue", 20, "italic")
+            #intro window                                   #register label not present
+            "heading intro":("Helvetica", 30, "bold"),          
+            "instructions intro":("Park Avenue", 20, "italic"),
+            "labels intro":("Arial",25),
+            "entry intro":("Arial",15),
+
+            #quiz window
+            "quiz window heading":("Helvetica", 40, "bold"),    
+            "quiz heading":("Helvetica", 50, "bold"),
+            "quiz instructions":("Helvetica", 25, "normal"),
+            "quiz button": ("Helvetica", 15, "bold"),
+            
+            #interest and skills quiz
+            "questions":("Arial",25),
+            "instructions":("Arial",25),
+            "number headers":("Arial",25),
+            "button size":(25,25,15) #height and width and selected ring size
              }
 
-font_sizes={ "labels":25, 
-            "significant_button":20,
-            "insignificant button":10
-                }
+
 
                 
 
 color_palette={
-    "frame fg":"#0D0D0D",
-    # intro window
-    "text color 1":"#EAEAEA",
-    "text color 2":"#A0A0A0",
-    "border color":"#9B5DE5",
-    "fg color 1":"#151515",
-    "fg color 2":"#1A1A1A",
-    "quiz button select":"green",
-    "clear button hover color":"red",
+    "frame fg":"#000000",
+    # intro window              #submit ,quit , check button not added
+    "heading text intro":"blue",
+    "heading bg intro":"white",
+    "instructions text intro":"green",
+    "instructions fg intro":"black",
+    "labels text intro":"white",
+    "labels fg intro":"black",
+    "entry text intro":"white",
+    "entry fg intro":"black",
+    "clear button text intro":"white",
+    "clear button fg intro":"black",            
+    "clear button hover color intro":"red",
+    "border intro":"yellow",
     # quiz window
-    "card interests": "#1B2E24",     
-    "card personality": "#2B1B3A",    
-    "card skills": "#1B2D3A",         
-    "btn interests": "#0CB943",       
-    "btn personality": "#C148E6",
-    "btn skills": "#53DFEC",
-    "quiz button select":"green",
-    "clear button hover color":"red",
-    "card interests": "#1B2E24",     
-    "card personality": "#2B1B3A",    
-    "card skills": "#1B2D3A",         
-    "btn interests": "#0CB943",       
-    "btn personality": "#C148E6",
-    "btn skills": "#53DFEC",
+    "heading quiz text":"white",
+    "heading quiz fg":"black",
+
+    "interests card": "#1B2E24",
+    "interests head":"green",     
+    "interests btn fg": "#0CB943",
+    "interests instructions":"green",
+    "interests btn hover":"light green",
+
+    "personality card": "#2B1B3A", 
+    "personality head":"pink",
+    "personality btn fg": "#C148E6",
+    "personality instructions":"pink",
+    "personality btn hover":"light pink",
+
+    "skills card": "#1B2D3A",    
+    "skills head":"blue",
+    "skills btn fg": "#53DFEC",
+    "skills instructions":"blue",
+    "skills btn hover":"cyan",
+
+    "quiz button text":"black",
+
     #interest quiz
     "heading 1":"dark green",
     "question 1":"green",
     "button hover 1":"green",
     "selected button color 1":"green",
-    "button color 1":"light green",
+    "unselected button color 1":"light green",
     #skills quiz
     "heading 2":"royal blue",
     "question 2":"blue",
     "button hover 2":"cyan",
     "selected button color 2":"blue",
-    "button color 2":"cyan"
+    "unselected button color 2":"cyan"
     }
 
-border_width=5
+
 
 def intro_window():
     global user
     # window Initialisation and Formatting
-
+    
     intro_gui = ctk.CTk()
     intro_gui.title("Career Compass")
     intro_gui.title("Career Compass")
@@ -186,53 +204,62 @@ def intro_window():
 
 
     intro_gui_frame=ctk.CTkFrame(intro_gui, fg_color=color_palette["frame fg"])
-    intro_gui_frame.pack(fill="both",expand=True)
+    intro_gui_frame.pack(side="left", fill="both", expand=True, padx=(30, 10), pady=10)
 
+    image_frame = ctk.CTkFrame(intro_gui_frame, fg_color="transparent")
+    image_frame.pack(side="right", fill="both", expand=True, padx=(10, 30), pady=10)
 
-    # variables used for storing information
+    # variables used for storing information and formatting
     name_var = ctk.StringVar()          #varible to get username
     usernames_with_previews={}          #variable to link username wIth previews                   
-    
 
     # Logic Functions
     def submit_details():
         username = name_var.get().strip()
 
-        if not username:
+        if not username:        #checks if username is empty
             CTkMessagebox(title="Error", message="Please enter a valid username", icon="cancel")    #makes sure empty usernames are rejected
-        elif username in usernames_with_previews:
+        elif username in usernames_with_previews:   ###change to DB
             CTkMessagebox(title="Error", message="Username already in use!", icon="warning")        #makes sure duplication usernames are not used
             name_entry.delete(0, "end")
         else:
-            preview_text = preview_textbox.get("1.0", "end-1c")     #extracts preview
-            usernames_with_previews[username] = preview_text        #links username to preview
-            intro_gui.destroy()                                   #destroys the window
-            quiz_window()                                              #calls next window
+            preview_text = preview_textbox.get("1.0", "end-1c")     
+            usernames_with_previews[username] = preview_text        ###change to DB
+            intro_gui.destroy()                              
+            quiz_window()                                           
 
     
-    def check_username():
+    def check_username():       #user can check if their previous results
         check_name_input=ctk.CTkInputDialog(title="check Username",text="Enter your registered username") 
         check_name=check_name_input.get_input()
 
-        if check_name==None: # exits function if window closed 
-            return
+        if check_name==None: 
+            return          # exits function if window closed 
         
-        if not check_name:
+        if not check_name:      #checks if username is empty
             CTkMessagebox(title="Error", message="Invalid username", icon="cancel")    
-        elif check_name not in usernames_with_previews:
-            CTkMessagebox(title="Error", message="Username not found!", icon="warning")
+        elif check_name not in usernames_with_previews: ###change to DB
+            CTkMessagebox(title="Error", message="Username not found!", icon="cancel")
         else:
-            pass #choice window
+            pass ###choice window to continue or go back
 
     # UI Components 
-    
 
     #  Header 
     header_label = ctk.CTkLabel(intro_gui_frame, text="Career Guidance Quiz",
-                                font=("Helvetica", 40, "bold"), corner_radius=15,
-                                text_color="#230DCE", fg_color="#FFFFFF")      ###custom font style to be used
-    header_label.pack(pady=(20, 10))
+                                font=font_styles["heading intro"], corner_radius=15,
+                                text_color=color_palette["heading text intro"], fg_color=color_palette["heading bg intro"])      
+    header_label.pack(pady=(20, 10))    # tuple to pad from top and bottom
 
+    # Image
+
+    try:
+        intro_image = ctk.CTkImage(dark_image=Image.open('intro image.png'), size=(600, 600))
+        intro_image_label = ctk.CTkLabel(image_frame, text="", image=intro_image)   #label to hold image
+    except:
+        intro_image_label = ctk.CTkLabel(image_frame, text="[🤖]", font=("Helvetica", 24))#incase image not found
+    intro_image_label.pack(expand=True, fill="both")
+    
     # Instructions
 
     inst_text = (
@@ -243,60 +270,62 @@ def intro_window():
         "4. You can always come back and try different quizzes later."
     )
     instructions_box = ctk.CTkTextbox(intro_gui_frame, width=700, height=185, 
-                                      font=font_styles["text box"], corner_radius=20, 
-                                      text_color=color_palette["text color 1"], fg_color=color_palette["fg color 1"], 
-                                      border_color=color_palette["border color"], border_width=3)
-    instructions_box.insert("0.0", inst_text)           #inserts text into textbox
-    instructions_box.configure(state="disabled")        #configures it so it can't be changed
-    instructions_box.pack(pady=10)
+                                      font=font_styles["instructions intro"], corner_radius=20, 
+                                      text_color=color_palette["instructions text intro"], fg_color=color_palette["instructions fg intro"], 
+                                      border_color=color_palette["border intro"], border_width=3)
+    instructions_box.insert("0.0", inst_text)           # inserts text into textbox
+    instructions_box.configure(state="disabled")        # configures it so it can't be changed
+    instructions_box.pack(pady=5, anchor="w")
 
 
     # Input Section (Using a Frame for better grouping)
     input_frame = ctk.CTkFrame(intro_gui_frame, fg_color="transparent")
-    input_frame.pack(pady=20, padx=400)
+    input_frame.pack(pady=20, anchor="w")
 
 
-    ctk.CTkLabel(input_frame, text="Username", 
-                 font=font_styles["labels"], corner_radius=15, 
-                 text_color=color_palette["text color 1"], fg_color=color_palette["fg color 1"]).grid(row=0, column=4, sticky="w")
-    name_entry = ctk.CTkEntry(input_frame, textvariable=name_var, 
-                              width=300 , font=font_styles["entry box"],
-                              fg_color=color_palette["fg color 2"], text_color=color_palette["text color 2"])
-    name_entry.grid(row=1, column=4, pady=(5, 10), padx=(0, 10))
+    ctk.CTkLabel(input_frame, text="Username",      #username text
+                 font=font_styles["labels intro"], corner_radius=15, 
+                 text_color=color_palette["labels text intro"], fg_color=color_palette["labels fg intro"]).grid(row=0, column=0, sticky="w", pady=5)
+    name_entry = ctk.CTkEntry(input_frame, textvariable=name_var,           #username entry
+                              width=300 , font=font_styles["entry intro"],
+                              fg_color=color_palette["entry fg intro"], text_color=color_palette["entry text intro"])
+    name_entry.grid(row=1, column=0, sticky="w", pady=5, padx=(10, 5))
 
 
     btn_clear_name = ctk.CTkButton(input_frame, text="Clear", width=80, 
-                                   fg_color=color_palette["fg color 1"],hover_color=color_palette["clear button hover color"],
-                                   text_color=color_palette["text color 1"], border_width=1,
+                                   fg_color=color_palette["clear button fg intro"],hover_color=color_palette["clear button hover color intro"],
+                                   text_color=color_palette["clear button text intro"], border_width=1,
                                    command=lambda:name_entry.delete(0, "end"))
-    btn_clear_name.grid(row=1, column=5, pady=(5, 10))
+    btn_clear_name.grid(row=1, column=1, sticky="w", pady=5)
 
     ctk.CTkLabel(input_frame, text="User Already registered? click here", 
                  font=("Arial",15), corner_radius=15, 
-                 text_color=color_palette["text color 1"], fg_color=color_palette["fg color 1"]).grid(row=2, column=4, sticky="w")
+                 text_color=color_palette["labels text intro"], fg_color=color_palette["labels fg intro"]).grid(row=2, column=0, sticky="w",padx=(25,5), pady=5)
     
     check_button = ctk.CTkButton(input_frame, text="Enter", 
                                width=80, height=15,
                                fg_color="#2fa572", hover_color="#106a43",
                                command=check_username)
-    check_button.grid(row=2, column=5, sticky="w")
+    check_button.grid(row=2, column =1, sticky="w", pady=5)
 
     # Career Preview Section
     ctk.CTkLabel(input_frame, text="Career Preview (Optional)", 
-                 font=font_styles["labels"]
-                 , text_color=color_palette["text color 1"]).grid(row=3, column=4, sticky="w")
+                 font=font_styles["labels intro"],
+                 text_color=color_palette["labels text intro"],
+                 fg_color=color_palette["labels fg intro"]).grid(row=3, column=0, sticky="w", pady=2)
     
-    preview_textbox = ctk.CTkTextbox(input_frame, height=100,  font=font_styles["text box"],
-                                     text_color=color_palette["text color 2"], fg_color=color_palette["fg color 1"], 
-                                     border_color=color_palette["border color"],border_width=3)
-    preview_textbox.grid(row=4, column=4, columnspan=2, pady=(5, 10), sticky="nsew")
+    preview_textbox = ctk.CTkTextbox(input_frame, height=100,  font=font_styles["entry intro"],
+                                     text_color=color_palette["entry text intro"], fg_color=color_palette["entry fg intro"], 
+                                     border_color=color_palette["border intro"],border_width=3)
+    preview_textbox.grid(row=4, column=0, columnspan=2, pady=2, sticky="nsew") #sticky nsew expands all directions
 
 
     btn_clear_preview = ctk.CTkButton(input_frame, text="Clear Preview", width=100,
-                                      fg_color=color_palette["fg color 1"], hover_color=color_palette["clear button hover color"],
+                                      fg_color=color_palette["clear button fg intro"], hover_color=color_palette["clear button hover color intro"],
+                                      text_color=color_palette["clear button text intro"],
                                         border_width=1,
                                       command=lambda:preview_textbox.delete("1.0", "end"))
-    btn_clear_preview.grid(row=5, column=4, sticky="w")
+    btn_clear_preview.grid(row=5, column=0, sticky="w", pady=2)
 
     # Action Buttons 
 
@@ -386,14 +415,14 @@ def quiz_window():
         instructions = ctk.CTkLabel(
             skills_gui_frame,
             text="answer each question by rating from 1 (Strongly Disagree) to 5 (Strongly Agree).",
-            font=font_styles["labels"],
+            font=font_styles["instructions"],
             text_color=color_palette["heading 2"]
         )
         instructions.grid(row=0, column=0, columnspan=7, padx=10, pady=(10, 0), sticky="w")
 
         # Column headers for 1-5 (row 1)
         for val in range(1, 6):
-            header = ctk.CTkLabel(skills_gui_frame, text=str(val), font=font_styles["labels"], text_color=color_palette["heading 2"])
+            header = ctk.CTkLabel(skills_gui_frame, text=str(val), font=font_styles["number headers"], text_color=color_palette["heading 2"])
             header.grid(row=1, column=val, padx=(5,110), pady=(6, 0), sticky="n")
 
         # Questions + radio buttons (rows 2-21) 
@@ -401,7 +430,7 @@ def quiz_window():
             question_label = ctk.CTkLabel(
                 skills_gui_frame,
                 text= "Q"+str(q+1)+")  "+questions[q], #accesses questions from index 0
-                font=font_styles["labels"],
+                font=font_styles["questions"],
                 justify="left",
                 anchor="w",
                 text_color=color_palette["question 2"]
@@ -415,9 +444,12 @@ def quiz_window():
                     variable=linking_list[q],
                     value=button_value,
                     width=30,
+                    radiobutton_height=font_styles["button size"][0],
+                    radiobutton_width=font_styles["button size"][1],
+                    border_width_checked=font_styles["button size"][2],
                     hover_color=color_palette["button hover 2"],
                     fg_color=color_palette["selected button color 2"],
-                    border_color=color_palette["button color 2"]
+                    border_color=color_palette["unselected button color 2"]
                 )
                 radio_button.grid(row=q + 2, column=button_value, padx=(5,100), pady=(6, 4), sticky="n")
 
@@ -489,14 +521,14 @@ def quiz_window():
         instructions = ctk.CTkLabel(
             interests_gui_frame,
             text="answer each question by rating from 1 (Strongly Disagree) to 5 (Strongly Agree).",
-            font=font_styles["labels"],
+            font=font_styles["instructions"],
             text_color=color_palette["heading 1"]
         )
         instructions.grid(row=0, column=0, columnspan=7, padx=10, pady=(10, 0), sticky="w")
 
         # Column headers for 1-5 (row 1)
         for val in range(1, 6):
-            header = ctk.CTkLabel(interests_gui_frame, text=str(val), font=font_styles["labels"], text_color=color_palette["heading 1"])
+            header = ctk.CTkLabel(interests_gui_frame, text=str(val), font=font_styles["number headers"], text_color=color_palette["heading 1"])
             header.grid(row=1, column=val, padx=(5,110), pady=(6, 0), sticky="n")
 
         # Questions + radio buttons (rows 2-21) 
@@ -504,7 +536,7 @@ def quiz_window():
             question_label = ctk.CTkLabel(
                 interests_gui_frame,
                 text= "Q"+str(q+1)+")  "+questions[q+20], #accesses questions from index 21
-                font=font_styles["labels"],
+                font=font_styles["questions"],
                 justify="left",
                 anchor="w",
                 text_color=color_palette["question 1"]
@@ -518,9 +550,12 @@ def quiz_window():
                     variable=linking_list[q],
                     value=button_value,
                     width=30,
+                    radiobutton_height=font_styles["button size"][0],
+                    radiobutton_width=font_styles["button size"][1],
+                    border_width_checked=font_styles["button size"][2],
                     hover_color=color_palette["button hover 1"],
                     fg_color=color_palette["selected button color 1"],
-                    border_color=color_palette["button color 1"]
+                    border_color=color_palette["unselected button color 1"]
                 )
                 radio_button.grid(row=q + 2, column=button_value, padx=(5,100), pady=(6, 4), sticky="n")
 
@@ -544,8 +579,9 @@ def quiz_window():
     heading_label = ctk.CTkLabel(
         quiz_gui_frame, 
         text="Let the compass point to your future",
-        font=("Helvetica", 40, "bold"), 
-        text_color="#FFFFFF"
+        font=font_styles["quiz window heading"], 
+        text_color=color_palette["heading quiz text"],
+        fg_color=color_palette["heading quiz fg"]
     )
     heading_label.pack(pady=(40, 20))
 
@@ -554,10 +590,10 @@ def quiz_window():
     cards_container.pack(fill="both", expand=True, padx=30, pady=(10, 40))
 
     # INTERESTS QUIZ CARD
-    interests_quiz_frame = ctk.CTkFrame(cards_container, fg_color=color_palette["card interests"], corner_radius=15)
+    interests_quiz_frame = ctk.CTkFrame(cards_container, fg_color=color_palette["interests card"], corner_radius=15)
     interests_quiz_frame.pack(side="left", fill="both", expand=True, padx=15)
 
-    interests_quiz_header = ctk.CTkLabel(interests_quiz_frame, text="Interests Quiz", text_color=color_palette["btn interests"], font=font_styles["quiz header"])
+    interests_quiz_header = ctk.CTkLabel(interests_quiz_frame, text="Interests Quiz", text_color=color_palette["interests head"], font=font_styles["quiz heading"])
     interests_quiz_header.pack(pady=(25, 10))
 
     try:
@@ -569,7 +605,7 @@ def quiz_window():
 
     interests_quiz_instructions = ctk.CTkLabel(
         interests_quiz_frame, 
-        text_color="#A0A0A0", 
+        text_color=color_palette["interests instructions"], 
         font=font_styles["quiz instructions"],
         justify="center",
         text=
@@ -589,18 +625,18 @@ actually love waking up to every day!
 
     interests_quiz_button = ctk.CTkButton(
         interests_quiz_frame, text="Start Quiz",
-        fg_color=color_palette["btn interests"], text_color="#121212", 
-        font=font_styles["button 1"], hover_color="#0A9636", height=35, corner_radius=8,
+        fg_color=color_palette["interests btn fg"], text_color=color_palette["quiz button text"], 
+        font=font_styles["quiz button"], hover_color=color_palette["interests btn hover"], height=35, corner_radius=8,
         command=interests_quiz
     )
     interests_quiz_button.pack(side="bottom", pady=25, padx=20, fill="x")
 
 
     #  PERSONALITY QUIZ CARD 
-    personality_quiz_frame = ctk.CTkFrame(cards_container, fg_color=color_palette["card personality"], corner_radius=15)
+    personality_quiz_frame = ctk.CTkFrame(cards_container, fg_color=color_palette["personality card"], corner_radius=15)
     personality_quiz_frame.pack(side="left", fill="both", expand=True, padx=15)
 
-    personality_quiz_header = ctk.CTkLabel(personality_quiz_frame, text="Personality Quiz", text_color=color_palette["btn personality"], font=font_styles["quiz header"])
+    personality_quiz_header = ctk.CTkLabel(personality_quiz_frame, text="Personality Quiz", text_color=color_palette["personality head"], font=font_styles["quiz heading"])
     personality_quiz_header.pack(pady=(25, 10))
 
     extra_note=ctk.CTkLabel(personality_quiz_frame,text="(RECOMMENDED)", text_color="#F50D0D", font=("Arial",15))
@@ -609,8 +645,7 @@ actually love waking up to every day!
     try:
         personality_quiz_image = ctk.CTkImage(dark_image=Image.open('icons for quiz/personality icon.png'), size=(100, 100))
         personality_quiz_image_label = ctk.CTkLabel(personality_quiz_frame, text="", image=personality_quiz_image)
-    except Exception as e:
-        print(e)
+    except Exception:
         personality_quiz_image_label = ctk.CTkLabel(personality_quiz_frame, text="[🧠]", font=("Helvetica", 24))
     personality_quiz_image_label.pack(pady=10)
 
@@ -635,18 +670,18 @@ environments and careers for you.''',
 
     personality_quiz_button = ctk.CTkButton(
         personality_quiz_frame, text="Start Quiz",
-        fg_color=color_palette["btn personality"], text_color="#121212", 
-        font=font_styles["button 1"], hover_color="#A037C0", height=35, corner_radius=8,
+        fg_color=color_palette["personality btn fg"], text_color=color_palette["quiz button text"], 
+        font=font_styles["quiz button"], hover_color=color_palette["personality btn hover"], height=35, corner_radius=8,
         command=personality_quiz
     )
     personality_quiz_button.pack(side="bottom", pady=25, padx=20, fill="x")
 
 
     #  SKILLS QUIZ CARD 
-    skills_quiz_frame = ctk.CTkFrame(cards_container, fg_color=color_palette["card skills"], corner_radius=15)
+    skills_quiz_frame = ctk.CTkFrame(cards_container, fg_color=color_palette["skills card"], corner_radius=15)
     skills_quiz_frame.pack(side="left", fill="both", expand=True, padx=15)
 
-    skills_quiz_header = ctk.CTkLabel(skills_quiz_frame, text="Skills Quiz", text_color=color_palette["btn skills"], font=font_styles["quiz header"])
+    skills_quiz_header = ctk.CTkLabel(skills_quiz_frame, text="Skills Quiz", text_color=color_palette["skills head"], font=font_styles["quiz heading"])
     skills_quiz_header.pack(pady=(25, 10))
 
     try:
@@ -678,12 +713,12 @@ from 1 to 5 to find out.''',
 
     skills_quiz_button = ctk.CTkButton(
         skills_quiz_frame, text="Start Quiz",
-        fg_color=color_palette["btn skills"], text_color="#121212", 
-        font=font_styles["button 1"], hover_color="#3CBCC8", height=35, corner_radius=8,
+        fg_color=color_palette["skills btn fg"], text_color=color_palette["quiz button text"], 
+        font=font_styles["quiz button"], hover_color=color_palette["skills btn hover"], height=35, corner_radius=8,
         command=skills_quiz
     )
     skills_quiz_button.pack(side="bottom", pady=25, padx=20, fill="x")
 
     quiz_gui.mainloop()
 
-quiz_window()
+intro_window()
