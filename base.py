@@ -73,7 +73,20 @@ class DB:
         sql_query = f"INSERT INTO answers ({columns}) VALUES ({placeholders})"
         mycursor.execute(sql_query, data_list)
         self.db.commit()
-        self.db.commit()
+    
+    # retrieves career options from database based on username
+    def get_result(self, username):
+        mycursor = self.db.cursor()
+
+        sql_query = "SELECT career1, career2, career3 FROM answers WHERE username = \"" + username + "\""
+        mycursor.execute(sql_query)
+        
+        career_tuple = ()
+        for career in mycursor:
+            career_tuple += career
+        
+        return career_tuple         # returns tuple containing the 3 career options
+
 
 
 class AI:
