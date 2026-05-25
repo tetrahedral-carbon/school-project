@@ -4,8 +4,6 @@ from CTkMessagebox import CTkMessagebox  #customtkinter doesnt have a messagebox
 from google import genai
 import mysql.connector as mcon
 from PIL import Image
-from PIL import Image
-
 
 
 class DB:
@@ -214,7 +212,7 @@ def intro_window():
     intro_gui.title("Career Compass")
     intro_gui.geometry("700X600")
     ctk.set_appearance_mode("dark")
-
+    intro_gui.after(0, lambda: intro_gui.state('zoomed'))       #sets full screen default
 
     intro_gui_frame=ctk.CTkFrame(intro_gui, fg_color=color_palette["frame fg"])
     intro_gui_frame.pack(side="left", fill="both", expand=True, padx=(30, 10), pady=10)
@@ -368,6 +366,7 @@ def quiz_window():
     quiz_gui.title("Career Compass")
     quiz_gui.geometry("1000x1000") 
     ctk.set_appearance_mode("dark")
+    quiz_gui.after(0, lambda: quiz_gui.state('zoomed'))
 
     # Main Background Frame
     quiz_gui_frame = ctk.CTkFrame(quiz_gui, fg_color=color_palette["frame fg"])
@@ -383,6 +382,7 @@ def quiz_window():
         skills_gui.title("Career Compass")
         skills_gui.geometry("700x600")
         ctk.set_appearance_mode("dark")
+        skills_gui.after(0, lambda: skills_gui.state('zoomed'))
 
         skills_gui_frame = ctk.CTkScrollableFrame(skills_gui, fg_color=color_palette["frame fg"])
         skills_gui_frame.pack(fill="both", expand=True)
@@ -489,6 +489,7 @@ def quiz_window():
         interests_gui.title("Career Compass")
         interests_gui.geometry("700x600")
         ctk.set_appearance_mode("dark")
+        interests_gui.after(0, lambda: interests_gui.state('zoomed'))
 
         interests_gui_frame = ctk.CTkScrollableFrame(interests_gui, fg_color=color_palette["frame fg"])
         interests_gui_frame.pack(fill="both", expand=True)
