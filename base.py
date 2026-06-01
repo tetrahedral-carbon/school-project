@@ -71,7 +71,20 @@ class DB:
         sql_query = f"INSERT INTO answers ({columns}) VALUES ({placeholders})"
         mycursor.execute(sql_query, data_list)
         self.db.commit()
-        self.db.commit()
+    
+    # retrieves career options from database based on username
+    def get_result(self, username):
+        mycursor = self.db.cursor()
+
+        sql_query = "SELECT career1, career2, career3 FROM answers WHERE username = \"" + username + "\""
+        mycursor.execute(sql_query)
+        
+        career_tuple = ()
+        for career in mycursor:
+            career_tuple += career
+        
+        return career_tuple         # returns tuple containing the 3 career options
+
 
 
 class AI:
@@ -467,7 +480,7 @@ def quiz_window():
         instructions = ctk.CTkLabel(
             skills_gui_frame,
             text="Answer each question by rating from 1 (Strongly Disagree) to 5 (Strongly Agree).",
-            font=font_styles["labels"],
+            font=font_styles["instructions"],
             text_color=color_palette["heading 2"]
         )
         instructions.grid(row=0, column=0, columnspan=7, padx=10, pady=(10, 0), sticky="w")
@@ -574,7 +587,7 @@ def quiz_window():
         instructions = ctk.CTkLabel(
             interests_gui_frame,
             text="Answer each question by rating from 1 (Strongly Disagree) to 5 (Strongly Agree).",
-            font=font_styles["labels"],
+            font=font_styles["instructions"],
             text_color=color_palette["heading 1"]
         )
         instructions.grid(row=0, column=0, columnspan=7, padx=10, pady=(10, 0), sticky="w")
