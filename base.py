@@ -146,6 +146,7 @@ font_styles={
             #personality quiz
             "questions p":("Arial",25),
             "instructions p":("Arial",25),
+            "options p":("Arial",15)
              }
 
 
@@ -206,7 +207,11 @@ color_palette={
 
     #personality quiz
     "heading 3":"red",
-    "question 3":"red"
+    "question 3":"red",
+    "button hover 3":"pink",
+    "selected button color 3":"pink",
+    "unselected button color 3":"pink",
+    "options color":"pink"
     }
 
 
@@ -399,6 +404,27 @@ def quiz_window():
 
         personality_gui.protocol("WM_DELETE_WINDOW", on_close_shortcut)
     
+        def submit_answers():
+            # Check if question has been answered
+            unanswered=[]
+            for i, var in enumerate(linking_list): #enumerate gives index and variable at a time 
+                if var.get() ==-1: #not answered
+                    unanswered.append("Q"+str(i+1)) #notes the Q no
+            if unanswered:      #checks if list is empty
+                CTkMessagebox(title="Question(s) unanswered", message="Please answer the question(s)"+str(unanswered).strip("[]") , icon="warning")
+                return #function exit
+
+            # question and answer dictionary
+            questions_and_answers = {
+                questions[j]: linking_list[j].get()
+                for j in range(20)
+            }
+        ###store answers in db
+
+            personality_gui.destroy()    
+
+
+        linking_list = [ctk.IntVar(value=-1) for _ in range(20)]
         personality_q= DB()
         q_and_o=personality_q.get_qo_personality()      # tuples of questions
         questions=q_and_o[0]
@@ -413,15 +439,52 @@ def quiz_window():
         instructions.grid(row=0, column=0, columnspan=7, padx=10, pady=(10, 0), sticky="w")
 
         for q in range(20):
+            question_block=ctk.CTkFrame(personality_gui_frame, 
+                                        fg_color="transparent")
+            question_block.grid(row=q+1, column=0, padx=15, pady=15, sticky="ew")
+
+            for col in range(4):    #coloumn weights for proper alignment
+                question_block.grid_columnconfigure(col, weight=1)
+
             question_label = ctk.CTkLabel(
-                personality_gui_frame,
+                question_block,
                 text= "Q"+str(q+1)+")  "+questions[q], #accesses questions from index 0
                 font=font_styles["questions p"],
-                justify="center",
+                justify="left",
                 text_color=color_palette["question 3"]
-            )
-            question_label.grid(row=q + 2,column =0, padx=(5, 5), pady=(12, 4))
+                )
+            question_label.grid(row=0, column=0, columnspan=4, padx=5, pady=(0, 8), sticky="w")
+                
+            for button_value in range(1, 5):
+                radio_button = ctk.CTkRadioButton(
+                    question_block,
+                    text=options[q][button_value-1]+".",                          
+                    variable=linking_list[q],
+                    value=button_value,
+                    width=30,
+                    radiobutton_height=font_styles["button size"][0],
+                    radiobutton_width=font_styles["button size"][1],
+                    border_width_checked=font_styles["button size"][2],
+                    hover_color=color_palette["button hover 3"],
+                    fg_color=color_palette["selected button color 3"],
+                    border_color=color_palette["unselected button color 3"],
+                    text_color=color_palette["options color"],
+                        font=font_styles["options p"],
+                    )
+                radio_button.grid(row=1, column=button_value-1, padx=(15, 5), pady=5, sticky="w")
 
+        submit_btn = ctk.CTkButton(
+            personality_gui_frame,
+            text="Submit",
+            width=200,
+            height=40,
+            fg_color="#2fa572",
+            hover_color="#106a43",
+            command=submit_answers,
+            )
+        submit_btn.grid(row=21, column=0, pady=(25, 35))
+
+        personality_gui.mainloop()
 
 
 
@@ -468,8 +531,8 @@ def quiz_window():
 
             # question and answer dictionary
             questions_and_answers = {
-                questions[i + 20]: linking_list[i].get()
-                for i in range(20)
+                questions[j + 20]: linking_list[j].get()
+                for j in range(20)
             }
         ###store answers in db
 
