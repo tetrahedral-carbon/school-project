@@ -12,7 +12,7 @@ class DB:
         self.db = mcon.connect(
             host = "localhost",
             user = "root",
-            passwd = "ilikemysql",
+            passwd = "dharun123",
             database = "mydb"
         )
 
@@ -141,7 +141,11 @@ font_styles={
             "questions":("Arial",25),
             "instructions":("Arial",25),
             "number headers":("Arial",25),
-            "button size":(25,25,15) #height and width and selected ring size
+            "button size":(25,25,15) ,#height and width and selected ring size
+
+            #personality quiz
+            "questions p":("Arial",25),
+            "instructions p":("Arial",25),
              }
 
 
@@ -198,7 +202,11 @@ color_palette={
     "question 2":"#65E4F7",
     "button hover 2":"cyan",
     "selected button color 2":"blue",
-    "unselected button color 2":"cyan"
+    "unselected button color 2":"cyan",
+
+    #personality quiz
+    "heading 3":"red",
+    "question 3":"red"
     }
 
 
@@ -374,7 +382,51 @@ def quiz_window():
 
     # Quiz functions placeholder
     def personality_quiz():
-        pass
+        quiz_gui.withdraw()
+
+        personality_gui = ctk.CTk()
+        personality_gui.title("Career Compass")
+        personality_gui.geometry("700x600")
+        ctk.set_appearance_mode("dark")
+        personality_gui.after(0, lambda: personality_gui.state('zoomed'))
+
+        personality_gui_frame = ctk.CTkScrollableFrame(personality_gui, fg_color=color_palette["frame fg"])
+        personality_gui_frame.pack(fill="both", expand=True)
+
+        def on_close_shortcut():        # function to close the program and return
+            personality_gui.destroy()
+            quiz_gui.deiconify()
+
+        personality_gui.protocol("WM_DELETE_WINDOW", on_close_shortcut)
+    
+        personality_q= DB()
+        q_and_o=personality_q.get_qo_personality()      # tuples of questions
+        questions=q_and_o[0]
+        options=q_and_o[1]
+        #  Instructions (row 0) 
+        instructions = ctk.CTkLabel(
+            personality_gui_frame,
+            text="Answer each question accurately based of your preferences",
+            font=font_styles["instructions p"],
+            text_color=color_palette["heading 3"]
+        )
+        instructions.grid(row=0, column=0, columnspan=7, padx=10, pady=(10, 0), sticky="w")
+
+        for q in range(20):
+            question_label = ctk.CTkLabel(
+                personality_gui_frame,
+                text= "Q"+str(q+1)+")  "+questions[q], #accesses questions from index 0
+                font=font_styles["questions p"],
+                justify="center",
+                text_color=color_palette["question 3"]
+            )
+            question_label.grid(row=q + 2,column =0, padx=(5, 5), pady=(12, 4))
+
+
+
+
+
+
     def skills_quiz():
         quiz_gui.withdraw() # keeps the quiz window hidden
 
@@ -735,4 +787,4 @@ from 1 to 5 to find out.''',
 
     quiz_gui.mainloop()
 
-intro_window()
+quiz_window()
