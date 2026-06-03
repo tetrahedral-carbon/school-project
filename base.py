@@ -145,7 +145,7 @@ font_styles={
 
             #personality quiz
             "questions p":("Arial",25),
-            "instructions p":("Arial",25),
+            "instructions p":("Arial",32),
             "options p":("Arial",15)
              }
 
@@ -206,7 +206,7 @@ color_palette={
     "unselected button color 2":"cyan",
 
     #personality quiz
-    "heading 3":"red",
+    "heading 3":"#E81616",
     "question 3":"red",
     "button hover 3":"pink",
     "selected button color 3":"pink",
@@ -227,7 +227,7 @@ def intro_window():
     ctk.set_appearance_mode("dark")
     intro_gui.after(0, lambda: intro_gui.state('zoomed'))       #sets full screen default
 
-    intro_gui_frame=ctk.CTkFrame(intro_gui, fg_color=color_palette["frame fg"])
+    intro_gui_frame=ctk.CTkFrame(intro_gui, fg_color="#A6D2E6")
     intro_gui_frame.pack(side="left", fill="both", expand=True, padx=(30, 10), pady=10)
 
     image_frame = ctk.CTkFrame(intro_gui_frame, fg_color="transparent")
@@ -385,7 +385,6 @@ def quiz_window():
     quiz_gui_frame = ctk.CTkFrame(quiz_gui, fg_color=color_palette["frame fg"])
     quiz_gui_frame.pack(fill="both", expand=True)
 
-    # Quiz functions placeholder
     def personality_quiz():
         quiz_gui.withdraw()
 
@@ -394,9 +393,11 @@ def quiz_window():
         personality_gui.geometry("700x600")
         ctk.set_appearance_mode("dark")
         personality_gui.after(0, lambda: personality_gui.state('zoomed'))
+        personality_gui.grid_columnconfigure(0, weight=1) 
 
         personality_gui_frame = ctk.CTkScrollableFrame(personality_gui, fg_color=color_palette["frame fg"])
         personality_gui_frame.pack(fill="both", expand=True)
+        personality_gui_frame.grid_columnconfigure(0, weight=1)
 
         def on_close_shortcut():        # function to close the program and return
             personality_gui.destroy()
@@ -429,10 +430,12 @@ def quiz_window():
         q_and_o=personality_q.get_qo_personality()      # tuples of questions
         questions=q_and_o[0]
         options=q_and_o[1]
+        
+
         #  Instructions (row 0) 
         instructions = ctk.CTkLabel(
             personality_gui_frame,
-            text="Answer each question accurately based of your preferences",
+            text="Answer each question accurately based of your preferences.\nif nothing matches choose a option that resembles you closely",
             font=font_styles["instructions p"],
             text_color=color_palette["heading 3"]
         )
@@ -443,35 +446,43 @@ def quiz_window():
                                         fg_color="transparent")
             question_block.grid(row=q+1, column=0, padx=15, pady=15, sticky="ew")
 
-            for col in range(4):    #coloumn weights for proper alignment
-                question_block.grid_columnconfigure(col, weight=1)
+            question_block.grid_columnconfigure(0, weight=1)
+            question_block.grid_columnconfigure(1, weight=1)
 
             question_label = ctk.CTkLabel(
                 question_block,
                 text= "Q"+str(q+1)+")  "+questions[q], #accesses questions from index 0
                 font=font_styles["questions p"],
                 justify="left",
+                wraplength=900,
                 text_color=color_palette["question 3"]
                 )
             question_label.grid(row=0, column=0, columnspan=4, padx=5, pady=(0, 8), sticky="w")
                 
+            personality_gui_frame.grid_columnconfigure(0, weight=1)
+            
+            
+
             for button_value in range(1, 5):
+                row_pos = (button_value - 1) // 2   # 0 or 1  → row 1 or row 2
+                col_pos = (button_value - 1) % 2    # 0 or 1  → left or right column
                 radio_button = ctk.CTkRadioButton(
-                    question_block,
-                    text=options[q][button_value-1]+".",                          
-                    variable=linking_list[q],
-                    value=button_value,
-                    width=30,
-                    radiobutton_height=font_styles["button size"][0],
-                    radiobutton_width=font_styles["button size"][1],
-                    border_width_checked=font_styles["button size"][2],
-                    hover_color=color_palette["button hover 3"],
-                    fg_color=color_palette["selected button color 3"],
-                    border_color=color_palette["unselected button color 3"],
-                    text_color=color_palette["options color"],
-                        font=font_styles["options p"],
-                    )
-                radio_button.grid(row=1, column=button_value-1, padx=(15, 5), pady=5, sticky="w")
+                question_block,
+                text=options[q][button_value-1]+".",                          
+                variable=linking_list[q],
+                value=button_value,
+                width=400,
+                radiobutton_height=font_styles["button size"][0],
+                radiobutton_width=font_styles["button size"][1],
+                border_width_checked=font_styles["button size"][2],
+                hover_color=color_palette["button hover 3"],
+                fg_color=color_palette["selected button color 3"],
+                border_color=color_palette["unselected button color 3"],
+                text_color=color_palette["options color"],
+                font=font_styles["options p"],
+                        )
+            
+                radio_button.grid(row=row_pos + 1, column=col_pos, padx=(15, 5), pady=5, sticky="w")
 
         submit_btn = ctk.CTkButton(
             personality_gui_frame,
