@@ -94,7 +94,7 @@ class AI:
     
     # gives ai model the user's answers and gets the output
     def give_ai_data(self):
-        client = genai.Client(api_key="AIzaSyBp5XGXWTFJ4JFXQLUpasLYcoVhP8w5SyU")
+        client = genai.Client(api_key="AIzaSyBp5XGXWTFJ4JFXQLUpasLYcoVhP8w5")
         
         # generating ai output
         response = client.models.generate_content(
