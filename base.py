@@ -108,7 +108,7 @@ class AI:
     
 
 #sample usage of AI class
-# my_object = AI({"initial": "this dictionary contains a set of questions and answers on a scale of 1 to 5 (1-strongly disagree, 5-strongly agree). recommend me 3 suitable career options. at the end give me a string of the 3 options in python syntax only, not a list of strings. do not use bold letters", 
+# my_object = AI({"initial": "this dictionary contains a set of questions and answers on a scale of 1 to 5 (1-strongly disagree, 5-strongly agree). recommend me 3 suitable career options and put the entire thing (career+explanation) in a python list, each element being a career+explanation. do not initialize variables. do not use strings in the list. at the end give me a string of the 3 options in python syntax only, not a list of strings. do not use bold letters.", 
 #                 "i am very honest": 5, 
 #                 "i like cars": 2, 
 #                 "i am very social": 3,
