@@ -1,0 +1,6 @@
+# just a random test
+
+string  = "'Internal Auditor: Your high honesty score is a perfect fit for a career that requires integrity and ethical reporting. Since you enjoy traveling and have a moderate social drive, you would excel in visiting different sites to verify records while maintaining a professional balance in communication.' 'Travel Writer: Your interest in traveling combined with a high honesty score makes you an excellent candidate for providing authentic and reliable travel accounts. Your balanced social score allows you to interact with locals for stories while also enjoying the solitary time needed for writing.''Environmental Consultant: This role leverages your high honesty for accurate environmental reporting and your preference for traveling to various project sites. The moderate social aspect of the job fits your personality, as it involves a mix of independent site work and collaborative meetings.''Internal Auditor, Travel Writer, Environmental Consultant'"
+
+list = string.split("'")
+print(list[1], list[3], list[5], list[7], sep = "\n")
