@@ -1,0 +1,9 @@
+how to run code
+
+cd career-compass          # or whatever folder you extracted into
+py -m venv venv
+venv\Scripts\activate
+
+pip install -r requirements.txt
+
+python app.py
